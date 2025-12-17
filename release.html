@@ -1,100 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Crear lanzamiento | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Crear lanzamiento | The Cris Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Poppins", sans-serif;
-      color: white;
-    }
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Poppins,sans-serif;
+  color:white;
+}
 
-    .card {
-      background: rgba(0,0,0,.65);
-      padding: 36px;
-      border-radius: 22px;
-      width: 100%;
-      max-width: 520px;
-      box-shadow: 0 30px 60px rgba(0,0,0,.7);
-    }
+.card{
+  background:rgba(0,0,0,.65);
+  padding:36px;
+  border-radius:22px;
+  width:100%;
+  max-width:520px;
+  box-shadow:0 30px 60px rgba(0,0,0,.7);
+}
 
-    h1 {
-      font-weight: 800;
-      margin-bottom: 20px;
-      text-align: center;
-    }
+h1{text-align:center;font-weight:800}
 
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      outline: none;
-      margin-bottom: 14px;
-      font-size: 14px;
-    }
+input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  margin-bottom:12px;
+}
 
-    label {
-      display: block;
-      margin: 6px 0;
-      font-size: 14px;
-    }
+button{
+  width:100%;
+  padding:14px;
+  border-radius:30px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color:white;
+  margin-top:10px;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border-radius: 30px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-      color: white;
-      font-size: 15px;
-      margin-top: 14px;
-    }
+.secondary{
+  background:transparent;
+  border:1px solid #555;
+}
 
-    .secondary {
-      background: transparent;
-      border: 1px solid #555;
-    }
+table{
+  width:100%;
+  margin-top:14px;
+  border-collapse:collapse;
+  font-size:14px;
+}
 
-    table {
-      width: 100%;
-      margin-top: 14px;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
+th,td{
+  border-bottom:1px solid #444;
+  padding:8px;
+}
 
-    th, td {
-      border-bottom: 1px solid #444;
-      padding: 8px;
-      text-align: left;
-    }
-
-    #langBtn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      background: rgba(0,0,0,.5);
-      border: 1px solid #555;
-      color: white;
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-  </style>
+#langBtn{
+  position:fixed;
+  top:16px;
+  right:16px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:rgba(0,0,0,.6);
+  border:1px solid #555;
+  color:white;
+  cursor:pointer;
+}
+</style>
 </head>
 
 <body>
@@ -102,107 +87,76 @@
 <button id="langBtn">🌍</button>
 
 <div class="card">
-  <h1 data-i18n="release">Crear lanzamiento</h1>
+<h1 data-i18n="release">Crear lanzamiento</h1>
 
-  <input id="title" placeholder="Título de la canción">
-  <input id="artist" placeholder="Artista">
-  <input value="The Cris Records" disabled>
-  <input type="date" id="date">
+<input id="title" placeholder="Título de la canción">
+<input placeholder="Artista">
+<input value="The Cris Records" disabled>
 
-  <label><input type="checkbox"> Spotify</label>
-  <label><input type="checkbox"> Apple Music</label>
-  <label><input type="checkbox"> YouTube Music</label>
+<div style="border:1px dashed #555;padding:14px;border-radius:14px">
+  <input placeholder="Link audio (Drive / Dropbox)">
+  <input placeholder="Link portada (3000x3000)">
+</div>
 
-  <!-- SUBIDA AUDIO + COVER -->
-  <div style="margin-top:20px; padding:15px; border:1px dashed #555; border-radius:14px">
-    <h3>Audio y portada</h3>
-    <input id="audio" placeholder="Link del audio (Drive / Dropbox)">
-    <input id="cover" placeholder="Link de la portada (3000x3000)">
-  </div>
+<button onclick="submitRelease()" data-i18n="send">
+Enviar lanzamiento
+</button>
 
-  <button onclick="submitRelease()" data-i18n="send">
-    Enviar lanzamiento
-  </button>
+<button class="secondary" onclick="showSingles()" data-i18n="singles">
+📄 Ver mis sencillos
+</button>
 
-  <button class="secondary" onclick="showSingles()" data-i18n="singles">
-    📄 Ver mis sencillos
-  </button>
-
-  <div id="singlesPanel" style="display:none">
-    <table>
-      <thead>
-        <tr>
-          <th>Canción</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody id="singlesList"></tbody>
-    </table>
-  </div>
+<div id="singlesPanel" style="display:none">
+<table>
+<thead>
+<tr><th>Canción</th><th>Estado</th></tr>
+</thead>
+<tbody id="list"></tbody>
+</table>
+</div>
 </div>
 
 <script>
-/* 🌍 IDIOMA GLOBAL */
+// 🌍 Idioma
 let lang = localStorage.getItem("lang") || "es";
-
 const texts = {
-  es: {
-    release: "Crear lanzamiento",
-    send: "Enviar lanzamiento",
-    singles: "📄 Ver mis sencillos"
-  },
-  en: {
-    release: "Create release",
-    send: "Submit release",
-    singles: "📄 View my singles"
-  }
+  es:{release:"Crear lanzamiento",send:"Enviar lanzamiento",singles:"📄 Ver mis sencillos"},
+  en:{release:"Create release",send:"Submit release",singles:"📄 View my singles"}
 };
-
-function applyLang() {
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.innerText = texts[lang][el.dataset.i18n];
+function applyLang(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    el.innerText=texts[lang][el.dataset.i18n];
   });
 }
-
-document.getElementById("langBtn").onclick = () => {
-  lang = lang === "es" ? "en" : "es";
-  localStorage.setItem("lang", lang);
+document.getElementById("langBtn").onclick=()=>{
+  lang=lang==="es"?"en":"es";
+  localStorage.setItem("lang",lang);
   applyLang();
 };
-
 applyLang();
 
-/* 🎵 LANZAMIENTOS */
-function submitRelease() {
-  const title = document.getElementById("title").value.trim();
-  if (!title) {
-    alert("Completa el título");
-    return;
-  }
+// 🎵 Lanzamientos
+function submitRelease(){
+  const title=document.getElementById("title").value.trim();
+  if(!title){alert("Ingresa título");return;}
 
-  const singles = JSON.parse(localStorage.getItem("singles")) || [];
+  const singles=JSON.parse(localStorage.getItem("singles"))||[];
   singles.push({
     title,
-    status: "⏳ Pendiente"
+    status:"⏳ Pendiente",
+    user:localStorage.getItem("userEmail")||"demo@user.com"
   });
-
-  localStorage.setItem("singles", JSON.stringify(singles));
-  alert("Lanzamiento enviado para revisión");
+  localStorage.setItem("singles",JSON.stringify(singles));
+  alert("Lanzamiento enviado");
 }
 
-function showSingles() {
-  document.getElementById("singlesPanel").style.display = "block";
-  const singles = JSON.parse(localStorage.getItem("singles")) || [];
-  const list = document.getElementById("singlesList");
-  list.innerHTML = "";
-
-  singles.forEach(s => {
-    list.innerHTML += `
-      <tr>
-        <td>${s.title}</td>
-        <td>${s.status}</td>
-      </tr>
-    `;
+function showSingles(){
+  document.getElementById("singlesPanel").style.display="block";
+  const list=document.getElementById("list");
+  list.innerHTML="";
+  const singles=JSON.parse(localStorage.getItem("singles"))||[];
+  singles.forEach(s=>{
+    list.innerHTML+=`<tr><td>${s.title}</td><td>${s.status}</td></tr>`;
   });
 }
 </script>

@@ -1,69 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Crear lanzamiento</title>
+<meta charset="UTF-8">
+<title>Admin Panel | The Cris Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  font-family:Poppins,sans-serif;
+  color:white;
+  padding:30px;
+}
+
+h1 {font-weight:800}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th, td {
+  border-bottom:1px solid #444;
+  padding:10px;
+}
+
+button {
+  padding:6px 12px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.approve {background:#2ecc71;color:black}
+.reject {background:#e74c3c;color:white}
+</style>
 </head>
+
 <body>
 
-<h2>Crear lanzamiento</h2>
+<h1>📊 Admin Panel</h1>
+<p>Gestión de lanzamientos</p>
 
-<input id="title" placeholder="Título de la canción">
-<input id="artist" placeholder="Artista">
-<input type="date" id="date">
+<table>
+<thead>
+<tr>
+<th>Canción</th>
+<th>Estado</th>
+<th>Acción</th>
+</tr>
+</thead>
+<tbody id="list"></tbody>
+</table>
 
-<h4>Plataformas</h4>
-<label><input type="checkbox" value="Spotify"> Spotify</label>
-<label><input type="checkbox" value="Apple Music"> Apple Music</label>
-<label><input type="checkbox" value="YouTube Music"> YouTube Music</label>
+<script>
+/* 🔐 EMAILS ADMIN */
+const ADMIN_EMAILS = [
+  "holasoycrismusic@gmail.com",
+  "thisis4k2@gmail.com"
+];
 
-<br><br>
-<button onclick="sendRelease()">Enviar lanzamiento</button>
+// ⚠️ SIMULACIÓN EMAIL ACTUAL
+// (Luego se conecta a Firebase Auth)
+const currentEmail = localStorage.getItem("userEmail");
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+if (!ADMIN_EMAILS.includes(currentEmail)) {
+  alert("Acceso denegado");
+  location.href = "index.html";
+}
 
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID"
-};
+const list = document.getElementById("list");
+let singles = JSON.parse(localStorage.getItem("singles")) || [];
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-onAuthStateChanged(auth, user => {
-  if (!user) window.location.href = "/index.html";
-});
-
-window.sendRelease = async () => {
-  const title = document.getElementById("title").value;
-  const artist = document.getElementById("artist").value;
-  const date = document.getElementById("date").value;
-
-  const platforms = [...document.querySelectorAll("input[type=checkbox]:checked")]
-    .map(p => p.value);
-
-  if (!title || !artist || !date || platforms.length === 0) {
-    return alert("Completa todos los campos");
-  }
-
-  await addDoc(collection(db, "releases"), {
-    title,
-    artist,
-    label: "The Cris Records",
-    releaseDate: date,
-    platforms,
-    status: "pending",
-    createdBy: auth.currentUser.email,
-    createdAt: serverTimestamp()
+function render() {
+  list.innerHTML = "";
+  singles.forEach((s, i) => {
+    list.innerHTML += `
+      <tr>
+        <td>${s.title}</td>
+        <td>${s.status}</td>
+        <td>
+          <button class="approve" onclick="setStatus(${i},'✅ Aprobado')">Aprobar</button>
+          <button class="reject" onclick="setStatus(${i},'❌ Rechazado')">Rechazar</button>
+        </td>
+      </tr>
+    `;
   });
+}
 
-  alert("🎵 Lanzamiento enviado para revisión");
-};
+function setStatus(index, status) {
+  singles[index].status = status;
+  localStorage.setItem("singles", JSON.stringify(singles));
+  render();
+}
+
+render();
 </script>
 
 </body>
