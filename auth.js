@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// 🔐 Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
   authDomain: "thecrisrecords1.firebaseapp.com",
@@ -14,70 +15,65 @@ const firebaseConfig = {
   appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
 };
 
+// 🚀 Init
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// ⏳ Esperar DOM SIEMPRE
 window.addEventListener("DOMContentLoaded", () => {
 
-  // 🌍 Idioma
-  let lang = "es";
-  const texts = {
-    es: {
-      login: "Iniciar sesión",
-      register: "Registrar sin email",
-      google: "Registrarse con Google"
-    },
-    en: {
-      login: "Sign in",
-      register: "Register without email",
-      google: "Sign up with Google"
-    }
-  };
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
 
-  const langBtn = document.getElementById("langBtn");
-  if (langBtn) {
-    langBtn.onclick = () => {
-      lang = lang === "es" ? "en" : "es";
-      document.getElementById("loginBtn").innerText = texts[lang].login;
-      document.getElementById("goRegister").innerText = texts[lang].register;
-      document.getElementById("googleBtn").innerText = texts[lang].google;
-    };
-  }
-
-  // 👉 Ir a register
-  const goRegister = document.getElementById("goRegister");
-  if (goRegister) {
-    goRegister.onclick = () => {
-      window.location.href = "register.html";
-    };
-  }
-
-  // LOGIN EMAIL
+  // 🔐 LOGIN (index.html)
   const loginBtn = document.getElementById("loginBtn");
   if (loginBtn) {
-    loginBtn.onclick = async () => {
-      await signInWithEmailAndPassword(auth, email.value, password.value);
-      window.location.href = "dashboard.html";
-    };
+    loginBtn.addEventListener("click", async () => {
+      try {
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        alert("Error al iniciar sesión");
+        console.error(e);
+      }
+    });
   }
 
-  // REGISTRO EMAIL
+  // 📝 REGISTRO (register.html)
   const registerBtn = document.getElementById("registerBtn");
   if (registerBtn) {
-    registerBtn.onclick = async () => {
-      await createUserWithEmailAndPassword(auth, email.value, password.value);
-      window.location.href = "dashboard.html";
-    };
+    registerBtn.addEventListener("click", async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        alert("Error al registrarse (email inválido o ya existe)");
+        console.error(e);
+      }
+    });
   }
 
-  // GOOGLE
+  // 🌍 GOOGLE (index.html)
   const googleBtn = document.getElementById("googleBtn");
   if (googleBtn) {
-    googleBtn.onclick = async () => {
-      await signInWithPopup(auth, provider);
-      window.location.href = "dashboard.html";
-    };
+    googleBtn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = "dashboard.html";
+      } catch (e) {
+        alert("Error con Google");
+        console.error(e);
+      }
+    });
+  
+
+  // 👉 Ir a register.html
+  const goRegister = document.getElementById("goRegister");
+  if (goRegister) {
+    goRegister.addEventListener("click", () => {
+      window.location.href = "register.html";
+    });
   }
 
 });
