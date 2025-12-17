@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -16,8 +17,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-document.getElementById("loginGoogle").onclick = () => {
-  signInWithPopup(auth, provider)
-    .then(() => window.location.href = "dashboard.html")
-    .catch(console.error);
-};
+// SOLO redirigir si estamos en index.html
+onAuthStateChanged(auth, user => {
+  if (user && window.location.pathname.endsWith("index.html")) {
+    window.location.href = "dashboard.html";
+  }
+});
+
+const btn = document.getElementById("loginGoogle");
+if (btn) {
+  btn.addEventListener("click", async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      window.location.href = "dashboard.html";
+    } catch (e) {
+      alert("Error al iniciar sesión");
+      console.error(e);
+    }
+  });
+}
