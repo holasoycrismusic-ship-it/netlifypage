@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/uploadmusic", "destination": "/uploadmusic.html" },
+    { "source": "/release", "destination": "/release.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
+}
