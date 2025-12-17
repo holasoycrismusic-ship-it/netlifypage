@@ -3,9 +3,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -21,29 +20,32 @@ const provider = new GoogleAuthProvider();
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  // 🌍 Idiomas
+  // 🌍 Idioma
   let lang = "es";
   const texts = {
     es: {
       login: "Iniciar sesión",
-      register: "Registrar sin email"
+      register: "Registrar sin email",
+      google: "Registrarse con Google"
     },
     en: {
       login: "Sign in",
-      register: "Register without email"
+      register: "Register without email",
+      google: "Sign up with Google"
     }
   };
 
-  const langBtn = document.getElementById("langToggle");
+  const langBtn = document.getElementById("langBtn");
   if (langBtn) {
     langBtn.onclick = () => {
       lang = lang === "es" ? "en" : "es";
       document.getElementById("loginBtn").innerText = texts[lang].login;
       document.getElementById("goRegister").innerText = texts[lang].register;
+      document.getElementById("googleBtn").innerText = texts[lang].google;
     };
   }
 
-  // 👉 Ir a registro
+  // 👉 Ir a register
   const goRegister = document.getElementById("goRegister");
   if (goRegister) {
     goRegister.onclick = () => {
@@ -51,42 +53,31 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // LOGIN
+  // LOGIN EMAIL
   const loginBtn = document.getElementById("loginBtn");
   if (loginBtn) {
     loginBtn.onclick = async () => {
-      await signInWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-      );
+      await signInWithEmailAndPassword(auth, email.value, password.value);
       window.location.href = "dashboard.html";
     };
   }
 
-  // REGISTRO
+  // REGISTRO EMAIL
   const registerBtn = document.getElementById("registerBtn");
   if (registerBtn) {
-    await createUserWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-    window.location.href = "dashboard.html";
+    registerBtn.onclick = async () => {
+      await createUserWithEmailAndPassword(auth, email.value, password.value);
+      window.location.href = "dashboard.html";
+    };
   }
 
   // GOOGLE
-  const googleBtn = document.getElementById("loginGoogle");
+  const googleBtn = document.getElementById("googleBtn");
   if (googleBtn) {
     googleBtn.onclick = async () => {
       await signInWithPopup(auth, provider);
       window.location.href = "dashboard.html";
     };
   }
-});
 
-onAuthStateChanged(auth, user => {
-  if (user && window.location.pathname.endsWith("index.html")) {
-    window.location.href = "dashboard.html";
-  }
 });

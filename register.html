@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Register | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Registrarse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
@@ -22,16 +22,18 @@
       padding: 40px;
       border-radius: 12px;
       width: 340px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      box-shadow: 0 0 40px rgba(0,0,0,.6);
       text-align: center;
     }
+
+    h1 { margin-bottom: 25px; }
 
     input {
       width: 100%;
       padding: 12px;
       margin-bottom: 12px;
-      border: none;
       border-radius: 6px;
+      border: none;
       background: #1f1f1f;
       color: white;
     }
@@ -41,24 +43,24 @@
       padding: 12px;
       border: none;
       border-radius: 6px;
-      font-weight: bold;
       background: #16a34a;
       color: white;
+      font-weight: bold;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h1>Crear cuenta</h1>
+<div class="box">
+  <h1>Registrarse</h1>
 
-    <input id="email" type="email" placeholder="Email" />
-    <input id="password" type="password" placeholder="Contraseña (mín. 6)" />
+  <input id="email" type="email" placeholder="Usuario (email)">
+  <input id="password" type="password" placeholder="Contraseña">
 
-    <button id="registerBtn">Registrar</button>
-  </div>
+  <button id="registerBtn">Registrarse</button>
+</div>
 
-  <script type="module" src="auth.js"></script>
+<script type="module" src="auth.js"></script>
 </body>
 </html>

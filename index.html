@@ -17,20 +17,20 @@
       color: white;
     }
 
-    .login-box {
+    .box {
       background: #121212;
       padding: 40px;
       border-radius: 12px;
       width: 340px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      box-shadow: 0 0 40px rgba(0,0,0,.6);
       text-align: center;
       position: relative;
     }
 
     .lang {
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 12px;
+      right: 12px;
       cursor: pointer;
       font-size: 18px;
     }
@@ -41,8 +41,8 @@
       width: 100%;
       padding: 12px;
       margin-bottom: 12px;
-      border: none;
       border-radius: 6px;
+      border: none;
       background: #1f1f1f;
       color: white;
     }
@@ -50,15 +50,15 @@
     button {
       width: 100%;
       padding: 12px;
-      margin-top: 10px;
       border: none;
       border-radius: 6px;
-      cursor: pointer;
+      margin-top: 10px;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .login-btn { background: #4f46e5; color: white; }
-    .google-btn { background: white; color: black; margin-top: 15px; }
+    .login { background: #4f46e5; color: white; }
+    .google { background: white; color: black; }
     .link {
       margin-top: 15px;
       font-size: 13px;
@@ -69,25 +69,21 @@
 </head>
 <body>
 
-  <div class="login-box">
-    <div class="lang" id="langToggle">🌍</div>
+<div class="box">
+  <div class="lang" id="langBtn">🌍</div>
 
-    <h1 id="title">The Cris Records</h1>
+  <h1 id="title">The Cris Records</h1>
 
-    <input id="email" type="email" placeholder="Usuario (email)" />
-    <input id="password" type="password" placeholder="Contraseña" />
+  <input id="email" type="email" placeholder="Usuario (email)">
+  <input id="password" type="password" placeholder="Contraseña">
 
-    <button id="loginBtn" class="login-btn">Iniciar sesión</button>
+  <button id="loginBtn" class="login">Iniciar sesión</button>
 
-    <div class="link" id="goRegister">
-      Registrar sin email
-    </div>
+  <div id="goRegister" class="link">Registrar sin email</div>
 
-    <button id="loginGoogle" class="google-btn">
-      Registrarse con Google
-    </button>
-  </div>
+  <button id="googleBtn" class="google">Registrarse con Google</button>
+</div>
 
-  <script type="module" src="auth.js"></script>
+<script type="module" src="auth.js"></script>
 </body>
 </html>
