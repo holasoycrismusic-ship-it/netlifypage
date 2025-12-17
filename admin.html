@@ -2,142 +2,69 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      font-family: "Poppins", sans-serif;
-      color: white;
-      padding: 30px;
-    }
-
-    h1 {
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #333;
-      text-align: left;
-    }
-
-    th {
-      color: #ff8c00;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    button {
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-      color: white;
-    }
-  </style>
+  <title>Crear lanzamiento</title>
 </head>
-
 <body>
 
-  <div class="top">
-    <h1>Panel de Administración</h1>
-    <button id="logout">Cerrar sesión</button>
-  </div>
+<h2>Crear lanzamiento</h2>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Tipo</th>
-        <th>Nombre artista</th>
-        <th>Spotify</th>
-        <th>Apple Music</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody id="activityTable"></tbody>
-  </table>
+<input id="title" placeholder="Título de la canción">
+<input id="artist" placeholder="Artista">
+<input type="date" id="date">
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<h4>Plataformas</h4>
+<label><input type="checkbox" value="Spotify"> Spotify</label>
+<label><input type="checkbox" value="Apple Music"> Apple Music</label>
+<label><input type="checkbox" value="YouTube Music"> YouTube Music</label>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
-      authDomain: "thecrisrecords1.firebaseapp.com",
-      projectId: "thecrisrecords1",
-      appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
-    };
+<br><br>
+<button onclick="sendRelease()">Enviar lanzamiento</button>
 
-    const ADMIN_EMAILS = [
-      "thisis4k2@gmail.com",
-      "holasoycrismusic@gmail.com"
-    ];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID"
+};
 
-    onAuthStateChanged(auth, user => {
-      if (!user) {
-        window.location.href = "index.html";
-        return;
-      }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-      if (!ADMIN_EMAILS.includes(user.email)) {
-        window.location.href = "dashboard.html";
-        return;
-      }
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "/index.html";
+});
 
-      loadActivities();
-    });
+window.sendRelease = async () => {
+  const title = document.getElementById("title").value;
+  const artist = document.getElementById("artist").value;
+  const date = document.getElementById("date").value;
 
-    function loadActivities() {
-      const table = document.getElementById("activityTable");
-      const activities = JSON.parse(localStorage.getItem("activities")) || [];
+  const platforms = [...document.querySelectorAll("input[type=checkbox]:checked")]
+    .map(p => p.value);
 
-      table.innerHTML = "";
+  if (!title || !artist || !date || platforms.length === 0) {
+    return alert("Completa todos los campos");
+  }
 
-      activities.forEach(a => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${a.tipo}</td>
-          <td>${a.nombre}</td>
-          <td>${a.spotify}</td>
-          <td>${a.apple}</td>
-          <td>${a.fecha}</td>
-        `;
-        table.appendChild(row);
-      });
-    }
+  await addDoc(collection(db, "releases"), {
+    title,
+    artist,
+    label: "The Cris Records",
+    releaseDate: date,
+    platforms,
+    status: "pending",
+    createdBy: auth.currentUser.email,
+    createdAt: serverTimestamp()
+  });
 
-    document.getElementById("logout").addEventListener("click", () => {
-      signOut(auth).then(() => {
-        window.location.href = "index.html";
-      });
-    });
-  </script>
+  alert("🎵 Lanzamiento enviado para revisión");
+};
+</script>
 
 </body>
 </html>

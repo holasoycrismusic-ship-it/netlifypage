@@ -3,193 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Distribuir música | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Poppins", sans-serif;
-      color: white;
-    }
-
-    .card {
-      background: rgba(0,0,0,0.6);
-      padding: 30px;
-      border-radius: 18px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 20px 40px rgba(0,0,0,.6);
-      text-align: center;
-    }
-
-    h1 {
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      font-size: 14px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 12px;
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-      color: white;
-    }
-
-    .btn-link {
-      background: transparent;
-      border: 1px solid #555;
-      color: #ccc;
-      margin-top: 18px;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
 </head>
-
 <body>
 
-  <div class="card">
+<h2>Crea tu perfil de artista</h2>
 
-    <!-- PASO 1 -->
-    <div id="step1">
-      <h1>Crea tu perfil de artista</h1>
+<input id="artistName" placeholder="Nombre de artista">
+<button onclick="saveArtist()">Continuar</button>
 
-      <input
-        type="text"
-        placeholder="Nombre de artista"
-        id="artistName"
-      />
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-      <button class="btn-main" onclick="createArtist()">
-        Seguir
-      </button>
-    </div>
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID"
+};
 
-    <!-- PASO 2 -->
-    <div id="step2" class="hidden">
-      <h1>Distribuir música</h1>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-      <button class="btn-main">
-        Distribuir música
-      </button>
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "/index.html";
+});
 
-      <button class="btn-link" onclick="goExistingArtist()">
-        ¿Deseas iniciar sesión con un perfil existente de artista?
-      </button>
-    </div>
+window.saveArtist = async () => {
+  const name = document.getElementById("artistName").value.trim();
+  if (!name) return alert("Ingresa nombre de artista");
 
-    <!-- PASO 3 -->
-    <div id="step3" class="hidden">
-      <h1>Perfil existente</h1>
+  await setDoc(doc(db, "users", auth.currentUser.uid), {
+    artistName: name,
+    email: auth.currentUser.email
+  });
 
-      <input
-        type="text"
-        placeholder="Nombre de artista"
-        id="existingArtist"
-      />
-
-      <input
-        type="url"
-        placeholder="Link de Spotify"
-        id="spotifyLink"
-      />
-
-      <input
-        type="url"
-        placeholder="Link de Apple Music"
-        id="appleLink"
-      />
-
-      <button class="btn-main" onclick="sendExistingArtist()">
-        Seguir a distribuir música
-      </button>
-    </div>
-
-  </div>
-
-  <script>
-    function saveActivity(data) {
-      const activities = JSON.parse(localStorage.getItem("activities")) || [];
-      activities.unshift(data);
-      localStorage.setItem("activities", JSON.stringify(activities));
-    }
-
-    function now() {
-      return new Date().toLocaleString();
-    }
-
-    function createArtist() {
-      const name = document.getElementById("artistName").value.trim();
-
-      if (!name) {
-        alert("Por favor ingresa un nombre de artista");
-        return;
-      }
-
-      saveActivity({
-        tipo: "Nuevo artista registrado",
-        nombre: name,
-        spotify: "—",
-        apple: "—",
-        fecha: now()
-      });
-
-      document.getElementById("step1").classList.add("hidden");
-      document.getElementById("step2").classList.remove("hidden");
-    }
-
-    function goExistingArtist() {
-      document.getElementById("step2").classList.add("hidden");
-      document.getElementById("step3").classList.remove("hidden");
-    }
-
-    function sendExistingArtist() {
-      const name = document.getElementById("existingArtist").value.trim();
-      const spotify = document.getElementById("spotifyLink").value.trim();
-      const apple = document.getElementById("appleLink").value.trim();
-
-      if (!name || !spotify || !apple) {
-        alert("Completa todos los campos");
-        return;
-      }
-
-      saveActivity({
-        tipo: "Perfil existente usado",
-        nombre: name,
-        spotify: spotify,
-        apple: apple,
-        fecha: now()
-      });
-
-      alert("Información guardada correctamente 🎵");
-    }
-  </script>
+  window.location.href = "/release";
+};
+</script>
 
 </body>
 </html>

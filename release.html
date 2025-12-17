@@ -1,174 +1,69 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Crear lanzamiento | The Cris Records</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
-
-<style>
-body {
-  margin: 0;
-  font-family: Poppins, sans-serif;
-  background: #0f0f0f;
-  color: white;
-  display: flex;
-  min-height: 100vh;
-}
-
-aside {
-  width: 240px;
-  background: #111;
-  padding: 20px;
-}
-
-aside h2 {
-  margin-bottom: 30px;
-}
-
-.menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-  font-weight: 600;
-}
-
-main {
-  flex: 1;
-  padding: 40px;
-}
-
-.card {
-  max-width: 600px;
-  background: rgba(255,255,255,0.05);
-  padding: 30px;
-  border-radius: 18px;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-}
-
-label {
-  margin-top: 18px;
-  display: block;
-  font-weight: 600;
-}
-
-.platforms {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.platforms label {
-  font-weight: 400;
-}
-
-button {
-  margin-top: 25px;
-  width: 100%;
-  padding: 14px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-  color: white;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Crear lanzamiento</title>
 </head>
-
 <body>
 
-<aside>
-  <h2>The Cris Records</h2>
+<h2>Crear lanzamiento</h2>
 
-  <div class="menu-btn">
-    ⭐ Crear lanzamiento
-  </div>
-</aside>
+<input id="title" placeholder="Título de la canción">
+<input id="artist" placeholder="Artista">
+<input type="date" id="date">
 
-<main>
-  <div class="card">
-    <h1>Crear lanzamiento</h1>
+<h4>Plataformas</h4>
+<label><input type="checkbox" value="Spotify"> Spotify</label>
+<label><input type="checkbox" value="Apple Music"> Apple Music</label>
+<label><input type="checkbox" value="YouTube Music"> YouTube Music</label>
 
-    <label>Título de la canción</label>
-    <input id="title" placeholder="Ej: Mi nueva canción">
+<br><br>
+<button onclick="sendRelease()">Enviar lanzamiento</button>
 
-    <label>Artista(s)</label>
-    <input id="artist" placeholder="Nombre artístico">
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    <label>Label</label>
-    <input id="label" value="The Cris Records">
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  projectId: "TU_PROJECT_ID"
+};
 
-    <label>Fecha de lanzamiento</label>
-    <input type="date" id="date">
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    <label>Plataformas</label>
-    <div class="platforms">
-      <label><input type="checkbox" value="Spotify"> Spotify</label>
-      <label><input type="checkbox" value="Apple Music"> Apple Music</label>
-      <label><input type="checkbox" value="YouTube Music"> YouTube Music</label>
-      <label><input type="checkbox" value="Deezer"> Deezer</label>
-      <label><input type="checkbox" value="Amazon Music"> Amazon Music</label>
-      <label><input type="checkbox" value="TikTok / Instagram"> TikTok / Instagram</label>
-    </div>
+onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "/index.html";
+});
 
-    <button onclick="submitRelease()">Enviar lanzamiento</button>
-  </div>
-</main>
-
-<script>
-function submitRelease() {
-  const title = document.getElementById("title").value.trim();
-  const artist = document.getElementById("artist").value.trim();
-  const label = document.getElementById("label").value.trim();
+window.sendRelease = async () => {
+  const title = document.getElementById("title").value;
+  const artist = document.getElementById("artist").value;
   const date = document.getElementById("date").value;
 
-  const selectedPlatforms = [...document.querySelectorAll("input[type=checkbox]:checked")]
-    .map(c => c.value);
+  const platforms = [...document.querySelectorAll("input[type=checkbox]:checked")]
+    .map(p => p.value);
 
-  if (!title || !artist || !date || selectedPlatforms.length === 0) {
-    alert("Completa todos los campos y selecciona plataformas");
-    return;
+  if (!title || !artist || !date || platforms.length === 0) {
+    return alert("Completa todos los campos");
   }
 
-  const releaseDate = new Date(date);
-  const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 7);
-
-  if (releaseDate < minDate) {
-    alert("La fecha debe ser mínimo 7 días después de hoy");
-    return;
-  }
-
-  const releases = JSON.parse(localStorage.getItem("releases")) || [];
-
-  releases.unshift({
-    titulo: title,
-    artista: artist,
-    label: label,
-    fecha: date,
-    plataformas: selectedPlatforms,
-    estado: "Pendiente"
+  await addDoc(collection(db, "releases"), {
+    title,
+    artist,
+    label: "The Cris Records",
+    releaseDate: date,
+    platforms,
+    status: "pending",
+    createdBy: auth.currentUser.email,
+    createdAt: serverTimestamp()
   });
 
-  localStorage.setItem("releases", JSON.stringify(releases));
-
-  alert("🎉 Lanzamiento enviado correctamente");
-}
+  alert("🎵 Lanzamiento enviado para revisión");
+};
 </script>
 
 </body>
