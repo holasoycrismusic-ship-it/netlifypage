@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
-body {
+body{
   margin:0;
   min-height:100vh;
   background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
@@ -17,20 +17,20 @@ body {
   padding:30px;
 }
 
-h1 {font-weight:800}
+h1{font-weight:800}
 
-table {
+table{
   width:100%;
   border-collapse:collapse;
   margin-top:20px;
 }
 
-th, td {
+th,td{
   border-bottom:1px solid #444;
   padding:10px;
 }
 
-button {
+button{
   padding:6px 12px;
   border-radius:12px;
   border:none;
@@ -38,70 +38,69 @@ button {
   font-weight:600;
 }
 
-.approve {background:#2ecc71;color:black}
-.reject {background:#e74c3c;color:white}
+.approve{background:#2ecc71}
+.reject{background:#e74c3c;color:white}
 </style>
 </head>
 
 <body>
 
 <h1>📊 Admin Panel</h1>
-<p>Gestión de lanzamientos</p>
 
 <table>
 <thead>
-<tr>
-<th>Canción</th>
-<th>Estado</th>
-<th>Acción</th>
-</tr>
+<tr><th>Canción</th><th>Estado</th><th>Acción</th></tr>
 </thead>
 <tbody id="list"></tbody>
 </table>
 
 <script>
-/* 🔐 EMAILS ADMIN */
-const ADMIN_EMAILS = [
+const ADMINS = [
   "holasoycrismusic@gmail.com",
-  "thisis4k2@gmail.com",
-  "siman39047@roastic.com"
+  "thisis4k2@gmail.com"
 ];
 
-// ⚠️ SIMULACIÓN EMAIL ACTUAL
-// (Luego se conecta a Firebase Auth)
-const currentEmail = localStorage.getItem("userEmail");
+// ⏳ Esperar email
+setTimeout(() => {
+  const email = localStorage.getItem("userEmail");
 
-if (!ADMIN_EMAILS.includes(currentEmail)) {
-  alert("Acceso denegado");
-  location.href = "index.html";
-}
+  if (!email || !ADMINS.includes(email)) {
+    alert("Acceso denegado");
+    location.href = "dashboard.html";
+    return;
+  }
 
-const list = document.getElementById("list");
-let singles = JSON.parse(localStorage.getItem("singles")) || [];
+  loadAdmin();
+}, 300);
 
-function render() {
-  list.innerHTML = "";
-  singles.forEach((s, i) => {
-    list.innerHTML += `
-      <tr>
-        <td>${s.title}</td>
-        <td>${s.status}</td>
-        <td>
-          <button class="approve" onclick="setStatus(${i},'✅ Aprobado')">Aprobar</button>
-          <button class="reject" onclick="setStatus(${i},'❌ Rechazado')">Rechazar</button>
-        </td>
-      </tr>
-    `;
-  });
-}
+function loadAdmin(){
+  let singles = JSON.parse(localStorage.getItem("singles")) || [];
+  const list = document.getElementById("list");
 
-function setStatus(index, status) {
-  singles[index].status = status;
-  localStorage.setItem("singles", JSON.stringify(singles));
+  function render(){
+    list.innerHTML="";
+    singles.forEach((s,i)=>{
+      list.innerHTML+=`
+        <tr>
+          <td>${s.title}</td>
+          <td>${s.status}</td>
+          <td>
+            <button class="approve" onclick="setStatus(${i},'✅ Aprobado')">Aprobar</button>
+            <button class="reject" onclick="setStatus(${i},'❌ Rechazado')">Rechazar</button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  window.setStatus = (i,status)=>{
+    singles[i].status=status;
+    localStorage.setItem("singles",JSON.stringify(singles));
+    render();
+  }
+
   render();
 }
-
-render();
 </script>
 
 </body>
