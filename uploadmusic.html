@@ -3,44 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <title>Distribuir música | The Cris Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      color: white;
+    }
+
+    .card {
+      background: rgba(0,0,0,.65);
+      padding: 36px;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.7);
+      text-align: center;
+    }
+
+    h1 {
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
+      color: white;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    .link {
+      margin-top: 16px;
+      background: transparent;
+      border: 1px solid #555;
+      color: #ccc;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>Crea tu perfil de artista</h2>
+<div class="card" id="step1">
+  <h1>Crea tu perfil de artista</h1>
+  <input id="artistName" placeholder="Nombre de artista">
+  <button onclick="goStep2()">Seguir</button>
+</div>
 
-<input id="artistName" placeholder="Nombre de artista">
-<button onclick="saveArtist()">Continuar</button>
+<div class="card" id="step2" style="display:none">
+  <h1>Perfil creado 🎵</h1>
+  <p>Ya puedes distribuir tu música</p>
+  <button onclick="location.href='release.html'">
+    ⭐ Crear lanzamiento
+  </button>
+</div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-onAuthStateChanged(auth, user => {
-  if (!user) window.location.href = "/index.html";
-});
-
-window.saveArtist = async () => {
+<script>
+function goStep2() {
   const name = document.getElementById("artistName").value.trim();
-  if (!name) return alert("Ingresa nombre de artista");
-
-  await setDoc(doc(db, "users", auth.currentUser.uid), {
-    artistName: name,
-    email: auth.currentUser.email
-  });
-
-  window.location.href = "/release";
-};
+  if (!name) {
+    alert("Ingresa un nombre de artista");
+    return;
+  }
+  localStorage.setItem("artistName", name);
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("step2").style.display = "block";
+}
 </script>
 
 </body>

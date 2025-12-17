@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Crear lanzamiento | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -21,7 +21,6 @@
 
     .card {
       background: rgba(0,0,0,.65);
-      backdrop-filter: blur(10px);
       padding: 36px;
       border-radius: 22px;
       width: 100%;
@@ -32,6 +31,7 @@
     h1 {
       font-weight: 800;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     input {
@@ -46,13 +46,11 @@
 
     label {
       display: block;
-      margin: 8px 0;
-      font-size: 14px;
+      margin: 6px 0;
     }
 
-    button, a.upload-btn {
+    button {
       width: 100%;
-      display: block;
       padding: 14px;
       border-radius: 30px;
       border: none;
@@ -61,22 +59,7 @@
       background: linear-gradient(135deg, #ff4d4d, #ff8c00);
       color: white;
       font-size: 15px;
-      text-align: center;
-      text-decoration: none;
-      margin-top: 18px;
-    }
-
-    .block {
-      margin-top: 30px;
-      background: rgba(255,255,255,0.05);
-      padding: 20px;
-      border-radius: 16px;
-      text-align: center;
-    }
-
-    .block p {
-      font-size: 13px;
-      color: #aaa;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -86,85 +69,19 @@
 <div class="card">
   <h1>Crear lanzamiento</h1>
 
-  <input id="title" placeholder="Título de la canción">
-  <input id="artist" placeholder="Artista">
-  <input type="date" id="date">
+  <input placeholder="Título de la canción">
+  <input placeholder="Artista">
+  <input placeholder="Label" value="The Cris Records">
+  <input type="date">
 
-  <label><input type="checkbox" value="Spotify"> Spotify</label>
-  <label><input type="checkbox" value="Apple Music"> Apple Music</label>
-  <label><input type="checkbox" value="YouTube Music"> YouTube Music</label>
+  <label><input type="checkbox"> Spotify</label>
+  <label><input type="checkbox"> Apple Music</label>
+  <label><input type="checkbox"> YouTube Music</label>
 
-  <button onclick="saveRelease()">Guardar lanzamiento</button>
-
-  <!-- BLOQUE GOOGLE FORM -->
-  <div class="block">
-    <h3>Sube tu audio y portada</h3>
-    <p>
-      Para subir tu canción y portada, utiliza nuestro formulario seguro.
-      Se abrirá en una nueva pestaña.
-    </p>
-
-    <a
-      class="upload-btn"
-      href="https://docs.google.com/forms/d/e/1FAIpQLSchuC9MO9QNI0sEZJhTC1LmxyzV-uoD3OyzWIWS31hBjEmAZQ/viewform"
-      target="_blank"
-    >
-      📤 Subir audio y portada
-    </a>
-  </div>
+  <button onclick="alert('Lanzamiento enviado para revisión')">
+    Enviar lanzamiento
+  </button>
 </div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  projectId: "TU_PROJECT_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let authChecked = false;
-
-onAuthStateChanged(auth, user => {
-  if (!authChecked) {
-    authChecked = true;
-    if (!user) window.location.href = "/index.html";
-  }
-});
-
-window.saveRelease = async () => {
-  const title = document.getElementById("title").value;
-  const artist = document.getElementById("artist").value;
-  const date = document.getElementById("date").value;
-
-  const platforms = [...document.querySelectorAll("input[type=checkbox]:checked")]
-    .map(p => p.value);
-
-  if (!title || !artist || !date || platforms.length === 0) {
-    alert("Completa todos los campos");
-    return;
-  }
-
-  await addDoc(collection(db, "releases"), {
-    title,
-    artist,
-    label: "The Cris Records",
-    releaseDate: date,
-    platforms,
-    status: "pending",
-    createdBy: auth.currentUser.email,
-    createdAt: serverTimestamp()
-  });
-
-  alert("🎵 Lanzamiento guardado. Ahora sube los archivos.");
-};
-</script>
 
 </body>
 </html>
