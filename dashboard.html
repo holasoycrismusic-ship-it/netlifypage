@@ -1,150 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Dashboard | The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>Dashboard | The Cris Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Fuente -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  font-family:Poppins,sans-serif;
+  color:white;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #0b0b0b;
-      color: white;
-    }
+header{
+  padding:20px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
 
-    /* ===== NAVBAR ===== */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(10px);
-      z-index: 100;
-    }
+.hero{
+  height:300px;
+  background:url("https://images.unsplash.com/photo-1511379938547-c1f69419868d") center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    header h1 {
-      font-size: 22px;
-      font-weight: 800;
-    }
+.hero h1{
+  background:rgba(0,0,0,.6);
+  padding:20px;
+  border-radius:20px;
+}
 
-    nav button {
-      margin-left: 12px;
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
+.btn{
+  background:linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color:white;
+  padding:14px 24px;
+  border-radius:30px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  animation:pulse 2s infinite;
+}
 
-    .btn-primary {
-      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-      color: white;
-    }
+.btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 25px rgba(255,120,0,.7);
+}
 
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid #fff;
-      color: white;
-    }
-
-    /* ===== HERO ===== */
-    .hero {
-      height: 100vh;
-      background-image:
-        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)),
-        url("https://images.unsplash.com/photo-1511379938547-c1f69419868d");
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .hero h2 {
-      font-size: 42px;
-      max-width: 900px;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
-    .hero span {
-      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    @media (max-width: 768px) {
-      .hero h2 {
-        font-size: 28px;
-      }
-    }
-  </style>
+@keyframes pulse{
+  0%{box-shadow:0 0 0 rgba(255,120,0,.4)}
+  50%{box-shadow:0 0 25px rgba(255,120,0,.9)}
+  100%{box-shadow:0 0 0 rgba(255,120,0,.4)}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <header>
-    <h1>The Cris Records</h1>
-    <nav>
-      <button class="btn-secondary" onclick="goDistribute()">Distribuir música</button>
-      <button class="btn-primary" onclick="logout()">Cerrar sesión</button>
-    </nav>
-  </header>
+<header>
+  <button class="btn" onclick="location.href='uploadmusic.html'">🎵 Distribuir música</button>
+  <button class="btn" onclick="location.href='artistas.html'">🎤 Artistas</button>
+  <button class="btn" id="adminBtn" style="display:none" onclick="location.href='admin.html'">🛠 Admin Panel</button>
+  <button class="btn" onclick="logout()">🚪 Cerrar sesión</button>
+</header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h2>
-      Tú puedes <span>distribuir tu música</span> en esta distributora
-      <br>
-      <span>100% gratuitamente</span> y obtener
-      <br>
-      <span>el 100% de tus regalías</span>
-    </h2>
-  </section>
+<div class="hero">
+  <h1>Tú puedes distribuir tu música 100% gratis y ganar todas tus regalías</h1>
+</div>
 
-  <!-- FIREBASE + SCRIPT -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
-      authDomain: "thecrisrecords1.firebaseapp.com",
-      projectId: "thecrisrecords1",
-      appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
-    };
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_DOMINIO.firebaseapp.com",
+  projectId: "TU_ID",
+  appId: "TU_APP_ID"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    // Cerrar sesión
-    window.logout = async () => {
-      await signOut(auth);
-      window.location.href = "index.html";
-    };
+const ADMINS=[
+ "holasoycrismusic@gmail.com",
+ "thisis4k2@gmail.com"
+];
 
-    // Ir a UploadMusic
-    window.goDistribute = () => {
-      window.location.href = "uploadmusic.html";
-    };
-  </script>
+onAuthStateChanged(auth,user=>{
+  if(!user){
+    location.href="index.html";
+  }else{
+    localStorage.setItem("userEmail",user.email);
+    if(ADMINS.includes(user.email)){
+      adminBtn.style.display="inline-block";
+    }
+  }
+});
+
+window.logout=()=>{
+  signOut(auth).then(()=>{
+    localStorage.clear();
+    location.href="index.html";
+  });
+};
+</script>
 
 </body>
 </html>
