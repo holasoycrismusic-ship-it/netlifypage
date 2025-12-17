@@ -27,11 +27,11 @@ body{
 }
 
 .card{
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.75);
   padding:30px;
   border-radius:20px;
   width:100%;
-  max-width:420px;
+  max-width:430px;
   color:white;
   text-align:center;
 }
@@ -39,7 +39,7 @@ body{
 input{
   width:100%;
   padding:12px;
-  margin:10px 0;
+  margin:8px 0;
   border-radius:12px;
   border:none;
   font-size:14px;
@@ -52,12 +52,17 @@ button{
   border:none;
   cursor:pointer;
   font-weight:600;
-  margin-top:12px;
+  margin-top:10px;
 }
 
 .main{
   background:linear-gradient(135deg,#ff4d4d,#ff8c00);
   color:white;
+}
+
+hr{
+  border:1px solid #333;
+  margin:18px 0;
 }
 </style>
 </head>
@@ -67,11 +72,23 @@ button{
 <div class="card">
   <h1>The Cris Records</h1>
 
+  <!-- EMAIL -->
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Contraseña">
-
   <button class="main" id="loginBtn">Iniciar sesión</button>
+
+  <!-- GOOGLE -->
   <button id="googleBtn">Registrarse / Iniciar con Google</button>
+
+  <hr>
+
+  <!-- PHONE -->
+  <input type="tel" id="phone" placeholder="+56912345678">
+  <div id="recaptcha-container"></div>
+  <button id="phoneBtn">Registrarse con teléfono</button>
+
+  <input type="text" id="code" placeholder="Código SMS" style="display:none">
+  <button id="verifyBtn" style="display:none">Verificar código</button>
 </div>
 
 <script type="module">
@@ -80,7 +97,9 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -94,33 +113,71 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-provider.setCustomParameters({ prompt: "select_account" });
-
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  try {
-    const email = document.getElementById("email").value;
-    const pass = document.getElementById("password").value;
-
-    const res = await signInWithEmailAndPassword(auth, email, pass);
+/* ---------------- EMAIL LOGIN ---------------- */
+loginBtn.onclick = async () => {
+  try{
+    const res = await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
     localStorage.setItem("userEmail", res.user.email);
-    window.location.href = "dashboard.html";
-  } catch (e) {
+    location.href = "dashboard.html";
+  }catch{
     alert("Credenciales incorrectas");
   }
-});
+};
 
-document.getElementById("googleBtn").addEventListener("click", async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    localStorage.setItem("userEmail", result.user.email);
-    window.location.href = "dashboard.html";
-  } catch (e) {
-    console.error(e);
+/* ---------------- GOOGLE LOGIN ---------------- */
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt:"select_account" });
+
+googleBtn.onclick = async () => {
+  try{
+    const res = await signInWithPopup(auth, provider);
+    localStorage.setItem("userEmail", res.user.email);
+    location.href = "dashboard.html";
+  }catch(e){
     alert("Error con Google");
+    console.error(e);
   }
-});
+};
+
+/* ---------------- PHONE LOGIN ---------------- */
+let confirmationResult;
+
+window.recaptchaVerifier = new RecaptchaVerifier(
+  'recaptcha-container',
+  { size: 'normal' },
+  auth
+);
+
+phoneBtn.onclick = async () => {
+  try{
+    confirmationResult = await signInWithPhoneNumber(
+      auth,
+      phone.value,
+      window.recaptchaVerifier
+    );
+    alert("Código enviado 📩");
+    code.style.display="block";
+    verifyBtn.style.display="block";
+  }catch(e){
+    alert("Error enviando SMS");
+    console.error(e);
+  }
+};
+
+verifyBtn.onclick = async () => {
+  try{
+    const res = await confirmationResult.confirm(code.value);
+    localStorage.setItem("userEmail", res.user.phoneNumber);
+    location.href="dashboard.html";
+  }catch{
+    alert("Código incorrecto");
+  }
+};
 </script>
 
 </body>
