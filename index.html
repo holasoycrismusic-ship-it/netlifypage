@@ -29,6 +29,7 @@
     h1 {
       margin-bottom: 25px;
       font-size: 24px;
+      letter-spacing: 1px;
     }
 
     input {
@@ -39,6 +40,7 @@
       border-radius: 6px;
       background: #1f1f1f;
       color: white;
+      font-size: 14px;
     }
 
     button {
@@ -68,7 +70,7 @@
     <h1>The Cris Records</h1>
 
     <input id="email" type="email" placeholder="Usuario (email)" />
-    <input id="password" type="password" placeholder="Contraseña" />
+    <input id="password" type="password" placeholder="Contraseña (mín. 6)" />
 
     <button id="loginBtn" class="login-btn">Iniciar sesión</button>
     <button id="registerBtn" class="register-btn">Registrar sin email</button>
@@ -80,61 +82,7 @@
     </button>
   </div>
 
-  <!-- 🔥 SCRIPT INLINE COMO MÓDULO -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
-      authDomain: "thecrisrecords1.firebaseapp.com",
-      projectId: "thecrisrecords1",
-      appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    document.getElementById("loginBtn").onclick = async () => {
-      const email = emailInput.value;
-      const pass = password.value;
-      try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        window.location.href = "dashboard.html";
-      } catch {
-        alert("Credenciales incorrectas");
-      }
-    };
-
-    document.getElementById("registerBtn").onclick = async () => {
-      const email = emailInput.value;
-      const pass = password.value;
-      try {
-        await createUserWithEmailAndPassword(auth, email, pass);
-        window.location.href = "dashboard.html";
-      } catch {
-        alert("Error al registrar");
-      }
-    };
-
-    document.getElementById("loginGoogle").onclick = async () => {
-      try {
-        await signInWithPopup(auth, provider);
-        window.location.href = "dashboard.html";
-      } catch {
-        alert("Error con Google");
-      }
-    };
-
-    const emailInput = document.getElementById("email");
-    const password = document.getElementById("password");
-  </script>
+  <!-- IMPORTANTE -->
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
