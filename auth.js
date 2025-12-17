@@ -4,7 +4,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // 🔐 Firebase config
@@ -20,16 +21,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ⏳ Esperar DOM SIEMPRE
+// ⏳ Esperar DOM
 window.addEventListener("DOMContentLoaded", () => {
 
   const email = document.getElementById("email");
   const password = document.getElementById("password");
+  const displayNameInput = document.getElementById("displayName");
 
-  // 🔐 LOGIN (index.html)
+  // 🔐 LOGIN EMAIL (index.html)
   const loginBtn = document.getElementById("loginBtn");
   if (loginBtn) {
-    loginBtn.addEventListener("click", async () => {
+    loginBtn.onclick = async () => {
       try {
         await signInWithEmailAndPassword(auth, email.value, password.value);
         window.location.href = "dashboard.html";
@@ -37,27 +39,40 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("Error al iniciar sesión");
         console.error(e);
       }
-    });
+    };
   }
 
-  // 📝 REGISTRO (register.html)
+  // 📝 REGISTRO EMAIL (register.html)
   const registerBtn = document.getElementById("registerBtn");
   if (registerBtn) {
-    registerBtn.addEventListener("click", async () => {
+    registerBtn.onclick = async () => {
       try {
-        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        const cred = await createUserWithEmailAndPassword(
+          auth,
+          email.value,
+          password.value
+        );
+
+        // 🧑 Guardar nombre de visualización
+        if (displayNameInput && displayNameInput.value) {
+          await updateProfile(cred.user, {
+            displayName: displayNameInput.value
+          });
+        }
+
+        // 👉 REDIRECCIÓN GARANTIZADA
         window.location.href = "dashboard.html";
       } catch (e) {
         alert("Error al registrarse (email inválido o ya existe)");
         console.error(e);
       }
-    });
+    };
   }
 
-  // 🌍 GOOGLE (index.html)
+  // 🔵 GOOGLE LOGIN (index.html)
   const googleBtn = document.getElementById("googleBtn");
   if (googleBtn) {
-    googleBtn.addEventListener("click", async () => {
+    googleBtn.onclick = async () => {
       try {
         await signInWithPopup(auth, provider);
         window.location.href = "dashboard.html";
@@ -65,15 +80,15 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("Error con Google");
         console.error(e);
       }
-    });
-  
+    };
+  }
 
   // 👉 Ir a register.html
   const goRegister = document.getElementById("goRegister");
   if (goRegister) {
-    goRegister.addEventListener("click", () => {
+    goRegister.onclick = () => {
       window.location.href = "register.html";
-    });
+    };
   }
 
 });
