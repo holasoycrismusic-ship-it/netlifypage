@@ -86,7 +86,7 @@
         id="artistName"
       />
 
-      <button class="btn-main" onclick="goStep2()">
+      <button class="btn-main" onclick="createArtist()">
         Seguir
       </button>
     </div>
@@ -111,19 +111,22 @@
       <input
         type="text"
         placeholder="Nombre de artista"
+        id="existingArtist"
       />
 
       <input
         type="url"
         placeholder="Link de Spotify"
+        id="spotifyLink"
       />
 
       <input
         type="url"
         placeholder="Link de Apple Music"
+        id="appleLink"
       />
 
-      <button class="btn-main">
+      <button class="btn-main" onclick="sendExistingArtist()">
         Seguir a distribuir música
       </button>
     </div>
@@ -131,7 +134,32 @@
   </div>
 
   <script>
-    function goStep2() {
+    function saveActivity(data) {
+      const activities = JSON.parse(localStorage.getItem("activities")) || [];
+      activities.unshift(data);
+      localStorage.setItem("activities", JSON.stringify(activities));
+    }
+
+    function now() {
+      return new Date().toLocaleString();
+    }
+
+    function createArtist() {
+      const name = document.getElementById("artistName").value.trim();
+
+      if (!name) {
+        alert("Por favor ingresa un nombre de artista");
+        return;
+      }
+
+      saveActivity({
+        tipo: "Nuevo artista registrado",
+        nombre: name,
+        spotify: "—",
+        apple: "—",
+        fecha: now()
+      });
+
       document.getElementById("step1").classList.add("hidden");
       document.getElementById("step2").classList.remove("hidden");
     }
@@ -139,6 +167,27 @@
     function goExistingArtist() {
       document.getElementById("step2").classList.add("hidden");
       document.getElementById("step3").classList.remove("hidden");
+    }
+
+    function sendExistingArtist() {
+      const name = document.getElementById("existingArtist").value.trim();
+      const spotify = document.getElementById("spotifyLink").value.trim();
+      const apple = document.getElementById("appleLink").value.trim();
+
+      if (!name || !spotify || !apple) {
+        alert("Completa todos los campos");
+        return;
+      }
+
+      saveActivity({
+        tipo: "Perfil existente usado",
+        nombre: name,
+        spotify: spotify,
+        apple: apple,
+        fecha: now()
+      });
+
+      alert("Información guardada correctamente 🎵");
     }
   </script>
 
