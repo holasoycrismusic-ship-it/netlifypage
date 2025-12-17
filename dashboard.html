@@ -16,15 +16,37 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, user => {
+  // 👀 Verificar sesión y mostrar saludo
+  onAuthStateChanged(auth, (user) => {
     if (!user) {
       window.location.href = "index.html";
+      return;
+    }
+
+    let name = "Usuario";
+
+    if (user.displayName) {
+      name = user.displayName;
+    } else if (user.email) {
+      name = user.email.split("@")[0];
+    }
+
+    // Capitalizar
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+
+    const welcome = document.getElementById("welcome");
+    if (welcome) {
+      welcome.textContent = `¡¡Hola, ${name}!!`;
     }
   });
 
-  document.getElementById("logout")?.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "index.html";
+  // 🚪 Logout
+  const logoutBtn = document.getElementById("logout");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
     });
-  });
+  }
 </script>
