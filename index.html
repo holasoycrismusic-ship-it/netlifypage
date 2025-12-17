@@ -1,93 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>The Cris Records</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
-      font-family: Arial, sans-serif;
-      color: white;
-    }
+const firebaseConfig = {
+  apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
+  authDomain: "thecrisrecords1.firebaseapp.com",
+  projectId: "thecrisrecords1",
+  appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
+};
 
-    .login-box {
-      background: #121212;
-      padding: 40px;
-      border-radius: 12px;
-      width: 320px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
-      text-align: center;
-    }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-    .login-box h1 {
-      margin-bottom: 25px;
-      font-size: 24px;
-      letter-spacing: 1px;
-    }
+// LOGIN EMAIL/PASS
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
 
-    .login-box input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: none;
-      border-radius: 6px;
-      background: #1f1f1f;
-      color: white;
-      font-size: 14px;
-    }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Credenciales incorrectas");
+  }
+});
 
-    .login-box input::placeholder {
-      color: #aaa;
-    }
+// REGISTRO EMAIL/PASS
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
 
-    .divider {
-      margin: 20px 0;
-      font-size: 12px;
-      color: #777;
-    }
+  try {
+    await createUserWithEmailAndPassword(auth, email, pass);
+    window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Error al registrar (¿usuario ya existe?)");
+  }
+});
 
-    .google-btn {
-      width: 100%;
-      padding: 12px;
-      background: white;
-      color: black;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .google-btn:hover {
-      background: #eaeaea;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="login-box">
-    <h1>The Cris Records</h1>
-
-    <input type="text" placeholder="Username" disabled>
-    <input type="password" placeholder="Contraseña" disabled>
-
-    <div class="divider">Acceso con cuenta</div>
-
-    <button id="loginGoogle" class="google-btn">
-      Registrarse con Google
-    </button>
-  </div>
-
-  <script type="module" src="auth.js"></script>
-</body>
-</html>
+// GOOGLE
+document.getElementById("loginGoogle").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Error con Google");
+  }
+});
