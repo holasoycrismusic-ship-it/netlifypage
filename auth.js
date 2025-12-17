@@ -3,7 +3,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -17,22 +18,38 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// SOLO redirigir si estamos en index.html
-onAuthStateChanged(auth, user => {
-  if (user && window.location.pathname.endsWith("index.html")) {
+// LOGIN EMAIL / PASSWORD
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
     window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Credenciales incorrectas");
   }
 });
 
-const btn = document.getElementById("loginGoogle");
-if (btn) {
-  btn.addEventListener("click", async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      window.location.href = "dashboard.html";
-    } catch (e) {
-      alert("Error al iniciar sesión");
-      console.error(e);
-    }
-  });
-}
+// REGISTRO SIN EMAIL (EMAIL/PASS)
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, pass);
+    window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Error al registrar (¿usuario ya existe?)");
+  }
+});
+
+// GOOGLE
+document.getElementById("loginGoogle").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    window.location.href = "dashboard.html";
+  } catch (e) {
+    alert("Error con Google");
+  }
+});
