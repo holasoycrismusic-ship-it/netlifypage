@@ -2,124 +2,182 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>The Cris Records</title>
+  <title>The Cris Records | Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+
   <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    color: white;
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      color: white;
+    }
 
-    background: linear-gradient(
-      -45deg,
-      #4f46e5,
-      #9333ea,
-      #ec4899,
-      #22d3ee
-    );
-    background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-  }
+    .card {
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,.6);
+    }
 
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+    h1 {
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
 
-  .box {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 16px;
-    width: 340px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.6);
-    text-align: center;
-    position: relative;
-    animation: float 6s ease-in-out infinite;
-  }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 12px;
+    }
 
-  .lang {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    cursor: pointer;
-    font-size: 18px;
-  }
+    .btn-main {
+      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
+      color: white;
+    }
 
-  h1 {
-    margin-bottom: 25px;
-    letter-spacing: 1px;
-  }
+    .btn-google {
+      background: white;
+      color: black;
+    }
 
-  input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    border: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-  }
+    .btn-link {
+      background: transparent;
+      color: #ccc;
+      border: 1px solid #555;
+    }
 
-  input::placeholder {
-    color: #ddd;
-  }
-
-  button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform .2s, opacity .2s;
-  }
-
-  button:hover {
-    transform: scale(1.03);
-    opacity: .9;
-  }
-
-  .login { background: #4f46e5; color: white; }
-  .google { background: white; color: black; }
-
-  .link {
-    margin: 15px 0;
-    font-size: 13px;
-    color: #ddd;
-    cursor: pointer;
-  }
-</style>
+    .password-tip {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #ccc;
+      opacity: 0.85;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="box">
-  <div class="lang" id="langBtn">🌍</div>
+  <div class="card">
+    <h1>The Cris Records</h1>
 
-  <h1 id="title">The Cris Records</h1>
+    <!-- FORMULARIO REAL (clave para Google Password Manager) -->
+    <form id="authForm" autocomplete="on">
 
-  <input id="email" type="email" placeholder="Usuario (email)">
-  <input id="password" type="password" placeholder="Contraseña">
+      <input
+        type="email"
+        id="email"
+        placeholder="Correo electrónico"
+        autocomplete="username"
+        required
+      />
 
-  <button id="loginBtn" class="login">Iniciar sesión</button>
+      <input
+        type="password"
+        id="password"
+        placeholder="Contraseña"
+        autocomplete="current-password"
+        required
+      />
 
-  <div id="goRegister" class="link">Registrar sin email</div>
+      <button type="submit" class="btn-main" id="loginBtn">
+        Iniciar sesión
+      </button>
+    </form>
 
-  <button id="googleBtn" class="google">Registrarse con Google</button>
-</div>
+    <button class="btn-link" id="registerBtn">
+      Registrarse
+    </button>
 
-<script type="module" src="auth.js"></script>
+    <button class="btn-google" id="googleBtn">
+      Registrarse / Entrar con Google
+    </button>
+
+    <p class="password-tip">
+      💡 Consejo: Guarda tu contraseña en el administrador de contraseñas de Google
+      para acceder más rápido y de forma segura.
+    </p>
+  </div>
+
+  <!-- FIREBASE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
+      authDomain: "thecrisrecords1.firebaseapp.com",
+      projectId: "thecrisrecords1",
+      appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+
+    // LOGIN
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, email.value, password.value);
+        window.location.href = "dashboard.html";
+      } catch {
+        alert("Credenciales incorrectas");
+      }
+    });
+
+    // REGISTRO
+    document.getElementById("registerBtn").addEventListener("click", async () => {
+      try {
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        window.location.href = "dashboard.html";
+      } catch {
+        alert("Error al registrar (¿usuario ya existe?)");
+      }
+    });
+
+    // GOOGLE
+    document.getElementById("googleBtn").addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+        window.location.href = "dashboard.html";
+      } catch {
+        alert("Error con Google");
+      }
+    });
+  </script>
+
 </body>
 </html>
