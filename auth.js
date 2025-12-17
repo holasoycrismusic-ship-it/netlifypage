@@ -4,9 +4,11 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+/* 🔥 FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
   authDomain: "thecrisrecords1.firebaseapp.com",
@@ -18,38 +20,58 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// LOGIN EMAIL / PASSWORD
-document.getElementById("loginBtn").addEventListener("click", async () => {
+/* 🧠 LOGIN CON GOOGLE */
+const googleBtn = document.getElementById("loginGoogle");
+googleBtn?.addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+
+    // ✅ GUARDAMOS EMAIL PARA ADMIN
+    localStorage.setItem("userEmail", result.user.email);
+
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    console.error(error);
+    alert("Error con Google");
+  }
+});
+
+/* 🔐 LOGIN EMAIL / PASSWORD */
+document.getElementById("loginBtn")?.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
 
   try {
-    await signInWithEmailAndPassword(auth, email, pass);
+    const result = await signInWithEmailAndPassword(auth, email, pass);
+
+    localStorage.setItem("userEmail", result.user.email);
     window.location.href = "dashboard.html";
-  } catch (e) {
+  } catch {
     alert("Credenciales incorrectas");
   }
 });
 
-// REGISTRO SIN EMAIL (EMAIL/PASS)
-document.getElementById("registerBtn").addEventListener("click", async () => {
+/* 📝 REGISTRO EMAIL / PASSWORD */
+document.getElementById("registerBtn")?.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
 
   try {
-    await createUserWithEmailAndPassword(auth, email, pass);
+    const result = await createUserWithEmailAndPassword(auth, email, pass);
+
+    localStorage.setItem("userEmail", result.user.email);
     window.location.href = "dashboard.html";
-  } catch (e) {
-    alert("Error al registrar (¿usuario ya existe?)");
+  } catch {
+    alert("Error al registrar");
   }
 });
 
-// GOOGLE
-document.getElementById("loginGoogle").addEventListener("click", async () => {
-  try {
-    await signInWithPopup(auth, provider);
-    window.location.href = "dashboard.html";
-  } catch (e) {
-    alert("Error con Google");
+/* 🔄 CONTROL DE SESIÓN (SIN REDIRECCIONES FALSAS) */
+let authReady = false;
+
+onAuthStateChanged(auth, user => {
+  if (!user && authReady) {
+    window.location.href = "index.html";
   }
+  authReady = true;
 });
