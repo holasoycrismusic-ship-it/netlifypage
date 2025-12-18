@@ -35,12 +35,6 @@ nav button {
   font-weight: bold;
   background: linear-gradient(135deg,#ff4d4d,#ff8c00);
   color: white;
-  transition: transform .2s, box-shadow .2s;
-}
-
-nav button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(255,140,0,.5);
 }
 
 /* HERO */
@@ -116,11 +110,6 @@ nav button:hover {
 
 .discord-btn {
   background: linear-gradient(135deg,#5865F2,#404EED);
-  box-shadow: 0 10px 30px rgba(88,101,242,.6);
-}
-
-.discord-btn:hover {
-  box-shadow: 0 20px 40px rgba(88,101,242,.9);
 }
 
 /* FOOTER */
@@ -129,6 +118,43 @@ footer {
   padding: 20px;
   text-align: center;
   opacity: .5;
+}
+
+/* 📱 RESPONSIVE PARA CELULAR */
+@media (max-width: 768px) {
+
+  nav {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .hero {
+    padding: 60px 20px;
+  }
+
+  .hero h2 {
+    font-size: 2rem;
+    transform: translateX(-80px);
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .action-btn {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .free h3 {
+    font-size: 1.4rem;
+  }
 }
 </style>
 </head>
