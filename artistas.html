@@ -22,30 +22,30 @@ header {
 }
 
 @keyframes slideIn {
-  from { transform: translateX(-100px); opacity: 0; }
+  from { transform: translateX(-120px); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-  gap: 20px;
+  gap: 22px;
 }
 
 .card {
   background: rgba(255,255,255,.05);
-  padding: 20px;
-  border-radius: 20px;
+  padding: 22px;
+  border-radius: 22px;
   box-shadow: 0 15px 40px rgba(0,0,0,.5);
-  transition: transform .3s, box-shadow .3s;
+  transition: transform .35s, box-shadow .35s;
 }
 
 .card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 25px 60px rgba(255,140,0,.4);
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 25px 60px rgba(255,140,0,.45);
 }
 
 .card h2 {
@@ -54,13 +54,13 @@ header {
 
 .card p {
   font-size: 14px;
-  opacity: .9;
+  opacity: .92;
 }
 
 .tag {
   display: inline-block;
-  margin-top: 10px;
-  padding: 6px 12px;
+  margin-top: 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: linear-gradient(135deg,#ff4d4d,#ff8c00);
   font-size: 12px;
@@ -78,7 +78,7 @@ header {
     <h2>DJ Skinners</h2>
     <p>
       DJ Skinners es un DJ y creador de funk y phonk.
-      Recientemente lanzó su sencillo <b>"I MISS 2025 FUNK"</b>
+      Recientemente lanzó <b>"I MISS 2025 FUNK"</b>
       junto a DJ MASTER 001 en nuestro sello.
     </p>
     <span class="tag">Funk / Phonk</span>
@@ -119,6 +119,34 @@ header {
       en nuestro sello.
     </p>
     <span class="tag">Funk / Phonk</span>
+  </div>
+
+  <div class="card">
+    <h2>4K2</h2>
+    <p>
+      Karl Johnson F, mejor conocido como 4K2, es editor y productor.
+      Hace lofi-beats y recientemente lanzó <b>"Quiet Rain"</b>
+      en nuestro sello.
+    </p>
+    <span class="tag">Lofi / Beats</span>
+  </div>
+
+  <div class="card">
+    <h2>J.A, S.A</h2>
+    <p>
+      Ellas son mis primas y forman parte del entorno creativo
+      del sello The Cris Records.
+    </p>
+    <span class="tag">Crew</span>
+  </div>
+
+  <div class="card">
+    <h2>HolaSoyCris</h2>
+    <p>
+      Cristóbal Ignacio, conocido como HSC, es creador de música
+      y fundador del sello <b>The Cris Records</b>.
+    </p>
+    <span class="tag">Founder/Funk</span>
   </div>
 
 </div>
