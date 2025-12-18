@@ -11,6 +11,7 @@ body {
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
   color: white;
+  overflow-x: hidden;
 }
 
 /* NAVBAR */
@@ -49,8 +50,18 @@ nav button:hover {
 }
 
 .hero h2 {
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   margin-bottom: 20px;
+  opacity: 0;
+  transform: translateX(-120px);
+  animation: slideIn 1.2s ease-out forwards;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .hero p {
@@ -58,6 +69,12 @@ nav button:hover {
   margin: auto;
   opacity: .85;
   font-size: 1.1rem;
+  animation: fadeIn 1.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: .85; }
 }
 
 /* BUTTONS */
@@ -125,6 +142,7 @@ footer {
 
 <section class="hero">
   <h2>Distribuye tu música al mundo 🌍</h2>
+
   <p>
     Publica tus lanzamientos, gestiona tu perfil artístico
     y distribuye tu música 100% gratis.
