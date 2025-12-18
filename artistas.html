@@ -23,7 +23,7 @@ header h1 {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: auto;
   padding: 20px;
   display: grid;
@@ -36,11 +36,12 @@ header h1 {
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 20px 40px rgba(0,0,0,.6);
-  transition: transform .3s;
+  transition: transform .3s, box-shadow .3s;
 }
 
 .card:hover {
   transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(0,0,0,.8);
 }
 
 .artist-name {
@@ -52,7 +53,7 @@ header h1 {
 .badge {
   display: inline-block;
   background: linear-gradient(135deg,#ff4d4d,#ff8c00);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   font-size: 12px;
   margin-bottom: 15px;
@@ -60,7 +61,7 @@ header h1 {
 
 .song {
   margin-top: 15px;
-  padding: 10px;
+  padding: 12px;
   background: rgba(0,0,0,.4);
   border-radius: 12px;
 }
@@ -88,15 +89,46 @@ footer {
     <div class="badge">Funk / Phonk</div>
 
     <p>
-      DJ Skinners es un DJ y creador de funk y phonk. 
-      Su sonido combina energía cruda con ritmos modernos,
-      destacándose dentro de la escena underground.
+      DJ Skinners es un DJ y creador de funk y phonk.
+      Destaca por su energía cruda y sonido underground.
     </p>
 
     <div class="song">
-      <strong>Último lanzamiento:</strong><br>
       🎧 <b>I MISS 2025 FUNK</b><br>
       junto a <b>DJ MASTER 001</b><br>
+      <small>Sello: The Cris Records</small>
+    </div>
+  </div>
+
+  <!-- YVN808 -->
+  <div class="card">
+    <div class="artist-name">YVN808</div>
+    <div class="badge">Phonk / Ritmo</div>
+
+    <p>
+      YVN808 es un creador de música phonk y ritmos intensos,
+      con un enfoque oscuro y moderno dentro del género.
+    </p>
+
+    <div class="song">
+      🎧 <b>FUNK DO ARPHY</b><br>
+      <small>Sello: The Cris Records</small>
+    </div>
+  </div>
+
+  <!-- DJ MASTER 001 -->
+  <div class="card">
+    <div class="artist-name">DJ MASTER 001</div>
+    <div class="badge">Funk / Phonk</div>
+
+    <p>
+      DJ MASTER 001 es un creador de funk y phonk,
+      colaborando activamente en lanzamientos del sello.
+    </p>
+
+    <div class="song">
+      🎧 <b>I MISS 2025 FUNK</b><br>
+      junto a <b>DJ Skinners</b><br>
       <small>Sello: The Cris Records</small>
     </div>
   </div>
