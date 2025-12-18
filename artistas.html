@@ -5,46 +5,107 @@
 <title>Artistas | The Cris Records</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  font-family:Poppins,sans-serif;
-  color:white;
-  padding:30px;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  color: white;
 }
 
-.card{
-  background:rgba(0,0,0,.6);
-  padding:20px;
-  border-radius:20px;
-  margin-bottom:14px;
+header {
+  padding: 30px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2.5rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 20px;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.6);
+  transition: transform .3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.artist-name {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.song {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(0,0,0,.4);
+  border-radius: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  opacity: .6;
 }
 </style>
 </head>
 
 <body>
 
-<h1>🎤 Artistas</h1>
+<header>
+  <h1>🎵 Artistas de The Cris Records</h1>
+  <p>Talento independiente distribuido globalmente</p>
+</header>
 
-<div id="list"></div>
+<div class="container">
 
-<script>
-const artists = JSON.parse(localStorage.getItem("artists")) || [];
+  <!-- DJ SKINNERS -->
+  <div class="card">
+    <div class="artist-name">DJ Skinners</div>
+    <div class="badge">Funk / Phonk</div>
 
-const list=document.getElementById("list");
+    <p>
+      DJ Skinners es un DJ y creador de funk y phonk. 
+      Su sonido combina energía cruda con ritmos modernos,
+      destacándose dentro de la escena underground.
+    </p>
 
-if(artists.length===0){
-  list.innerHTML="<p>No hay artistas registrados aún</p>";
-}else{
-  artists.forEach(a=>{
-    list.innerHTML+=`<div class="card">${a}</div>`;
-  });
-}
-</script>
+    <div class="song">
+      <strong>Último lanzamiento:</strong><br>
+      🎧 <b>I MISS 2025 FUNK</b><br>
+      junto a <b>DJ MASTER 001</b><br>
+      <small>Sello: The Cris Records</small>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 The Cris Records
+</footer>
 
 </body>
 </html>
