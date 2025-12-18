@@ -14,12 +14,16 @@ body {
 }
 
 header {
-  padding: 30px;
+  padding: 25px;
   text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  animation: slideIn 1s ease;
 }
 
-header h1 {
-  font-size: 2.5rem;
+@keyframes slideIn {
+  from { transform: translateX(-100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 .container {
@@ -27,117 +31,97 @@ header h1 {
   margin: auto;
   padding: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
   gap: 20px;
 }
 
 .card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,.05);
+  padding: 20px;
   border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.6);
+  box-shadow: 0 15px 40px rgba(0,0,0,.5);
   transition: transform .3s, box-shadow .3s;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 30px 60px rgba(0,0,0,.8);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 25px 60px rgba(255,140,0,.4);
 }
 
-.artist-name {
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 10px;
+.card h2 {
+  margin: 0 0 10px;
 }
 
-.badge {
+.card p {
+  font-size: 14px;
+  opacity: .9;
+}
+
+.tag {
   display: inline-block;
-  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
-  padding: 6px 14px;
+  margin-top: 10px;
+  padding: 6px 12px;
   border-radius: 999px;
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
   font-size: 12px;
-  margin-bottom: 15px;
-}
-
-.song {
-  margin-top: 15px;
-  padding: 12px;
-  background: rgba(0,0,0,.4);
-  border-radius: 12px;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  opacity: .6;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>🎵 Artistas de The Cris Records</h1>
-  <p>Talento independiente distribuido globalmente</p>
-</header>
+<header>🎧 Artistas del Sello</header>
 
 <div class="container">
 
-  <!-- DJ SKINNERS -->
   <div class="card">
-    <div class="artist-name">DJ Skinners</div>
-    <div class="badge">Funk / Phonk</div>
-
+    <h2>DJ Skinners</h2>
     <p>
       DJ Skinners es un DJ y creador de funk y phonk.
-      Destaca por su energía cruda y sonido underground.
+      Recientemente lanzó su sencillo <b>"I MISS 2025 FUNK"</b>
+      junto a DJ MASTER 001 en nuestro sello.
     </p>
-
-    <div class="song">
-      🎧 <b>I MISS 2025 FUNK</b><br>
-      junto a <b>DJ MASTER 001</b><br>
-      <small>Sello: The Cris Records</small>
-    </div>
+    <span class="tag">Funk / Phonk</span>
   </div>
 
-  <!-- YVN808 -->
   <div class="card">
-    <div class="artist-name">YVN808</div>
-    <div class="badge">Phonk / Ritmo</div>
-
+    <h2>YVN808</h2>
     <p>
-      YVN808 es un creador de música phonk y ritmos intensos,
-      con un enfoque oscuro y moderno dentro del género.
+      YVN808 es un creador de música phonk y ritmo.
+      Recientemente lanzó <b>"FUNK DO ARPHY"</b> en nuestro sello.
     </p>
-
-    <div class="song">
-      🎧 <b>FUNK DO ARPHY</b><br>
-      <small>Sello: The Cris Records</small>
-    </div>
+    <span class="tag">Phonk</span>
   </div>
 
-  <!-- DJ MASTER 001 -->
   <div class="card">
-    <div class="artist-name">DJ MASTER 001</div>
-    <div class="badge">Funk / Phonk</div>
-
+    <h2>DJ MASTER 001</h2>
     <p>
-      DJ MASTER 001 es un creador de funk y phonk,
-      colaborando activamente en lanzamientos del sello.
+      DJ MASTER 001 es creador de funk y phonk.
+      Lanzó <b>"I MISS 2025 FUNK"</b> junto a DJ Skinners en nuestro sello.
     </p>
+    <span class="tag">Funk / Phonk</span>
+  </div>
 
-    <div class="song">
-      🎧 <b>I MISS 2025 FUNK</b><br>
-      junto a <b>DJ Skinners</b><br>
-      <small>Sello: The Cris Records</small>
-    </div>
+  <div class="card">
+    <h2>M.V, B.V</h2>
+    <p>
+      Son mis increíbles primos, parte importante del sello
+      y apoyo creativo dentro de The Cris Records.
+    </p>
+    <span class="tag">Crew</span>
+  </div>
+
+  <div class="card">
+    <h2>DJ DSN</h2>
+    <p>
+      Santiago, mejor conocido como DJ DSN, es un DJ y creador de funk/phonk.
+      Lanzó <b>"MONTAGEM MURDER"</b> y <b>"EN MI PUEBLO FUNK"</b>
+      en nuestro sello.
+    </p>
+    <span class="tag">Funk / Phonk</span>
   </div>
 
 </div>
-
-<footer>
-  © 2025 The Cris Records
-</footer>
 
 </body>
 </html>
