@@ -2,67 +2,98 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>The Cris Records</title>
+<title>The Cris Records | Iniciar sesión</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-family:Poppins,sans-serif;
-  background:linear-gradient(-45deg,#ff4d4d,#ff8c00,#8e44ad,#3498db);
-  background-size:400% 400%;
-  animation:bgmove 10s ease infinite;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(270deg, #ff4d4d, #ff8c00, #ff4d4d);
+  background-size: 600% 600%;
+  animation: bgMove 12s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@keyframes bgmove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.card{
-  background:rgba(0,0,0,.75);
-  padding:30px;
-  border-radius:20px;
-  width:100%;
-  max-width:430px;
-  color:white;
-  text-align:center;
+.card {
+  background: rgba(0,0,0,.75);
+  padding: 40px 30px;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 380px;
+  color: white;
+  box-shadow: 0 25px 60px rgba(0,0,0,.7);
+  animation: fadeIn .8s ease;
 }
 
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:12px;
-  border:none;
-  font-size:14px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-button{
-  width:100%;
-  padding:12px;
-  border-radius:20px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  margin-top:10px;
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
-.main{
-  background:linear-gradient(135deg,#ff4d4d,#ff8c00);
-  color:white;
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  font-size: 14px;
 }
 
-hr{
-  border:1px solid #333;
-  margin:18px 0;
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: transform .2s, box-shadow .2s;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 15px 35px rgba(255,140,0,.7);
+}
+
+.btn-main {
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color: white;
+}
+
+.btn-google {
+  background: white;
+  color: black;
+}
+
+small {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  opacity: .7;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .card {
+    margin: 20px;
+  }
 }
 </style>
 </head>
@@ -72,25 +103,21 @@ hr{
 <div class="card">
   <h1>The Cris Records</h1>
 
-  <!-- EMAIL -->
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Contraseña">
-  <button class="main" id="loginBtn">Iniciar sesión</button>
+  <input type="email" id="email" placeholder="Usuario (email)" />
+  <input type="password" id="password" placeholder="Contraseña" />
 
-  <!-- GOOGLE -->
-  <button id="googleBtn">Registrarse / Iniciar con Google</button>
+  <button class="btn-main" id="loginBtn">
+    Iniciar sesión
+  </button>
 
-  <hr>
+  <button class="btn-google" id="googleBtn">
+    Iniciar sesión con Google
+  </button>
 
-  <!-- PHONE -->
-  <input type="tel" id="phone" placeholder="+56912345678">
-  <div id="recaptcha-container"></div>
-  <button id="phoneBtn">Registrarse con teléfono</button>
-
-  <input type="text" id="code" placeholder="Código SMS" style="display:none">
-  <button id="verifyBtn" style="display:none">Verificar código</button>
+  <small>© 2025 The Cris Records</small>
 </div>
 
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -98,85 +125,53 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  RecaptchaVerifier,
-  signInWithPhoneNumber
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
   authDomain: "thecrisrecords1.firebaseapp.com",
   projectId: "thecrisrecords1",
-  storageBucket: "thecrisrecords1.appspot.com",
-  messagingSenderId: "1050112675638",
   appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
-/* ---------------- EMAIL LOGIN ---------------- */
-loginBtn.onclick = async () => {
-  try{
-    const res = await signInWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-    localStorage.setItem("userEmail", res.user.email);
-    location.href = "dashboard.html";
-  }catch{
-    alert("Credenciales incorrectas");
-  }
-};
-
-/* ---------------- GOOGLE LOGIN ---------------- */
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt:"select_account" });
 
-googleBtn.onclick = async () => {
-  try{
-    const res = await signInWithPopup(auth, provider);
-    localStorage.setItem("userEmail", res.user.email);
-    location.href = "dashboard.html";
-  }catch(e){
-    alert("Error con Google");
-    console.error(e);
-  }
+/* AUTO REDIRECT */
+onAuthStateChanged(auth, user => {
+  if (user) location.href = "/dashboard";
+});
+
+/* LOGIN EMAIL */
+document.getElementById("loginBtn").onclick = () => {
+  login();
 };
 
-/* ---------------- PHONE LOGIN ---------------- */
-let confirmationResult;
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") login();
+});
 
-window.recaptchaVerifier = new RecaptchaVerifier(
-  'recaptcha-container',
-  { size: 'normal' },
-  auth
-);
+function login() {
+  const email = email.value;
+  const pass = password.value;
 
-phoneBtn.onclick = async () => {
-  try{
-    confirmationResult = await signInWithPhoneNumber(
-      auth,
-      phone.value,
-      window.recaptchaVerifier
-    );
-    alert("Código enviado 📩");
-    code.style.display="block";
-    verifyBtn.style.display="block";
-  }catch(e){
-    alert("Error enviando SMS");
-    console.error(e);
+  if (!email || !pass) {
+    alert("Completa todos los campos");
+    return;
   }
-};
 
-verifyBtn.onclick = async () => {
-  try{
-    const res = await confirmationResult.confirm(code.value);
-    localStorage.setItem("userEmail", res.user.phoneNumber);
-    location.href="dashboard.html";
-  }catch{
-    alert("Código incorrecto");
-  }
+  signInWithEmailAndPassword(auth, email, pass)
+    .then(() => location.href = "/dashboard")
+    .catch(() => alert("Credenciales incorrectas"));
+}
+
+/* GOOGLE */
+document.getElementById("googleBtn").onclick = () => {
+  signInWithPopup(auth, provider)
+    .then(() => location.href = "/dashboard")
+    .catch(() => alert("Error con Google"));
 };
 </script>
 
