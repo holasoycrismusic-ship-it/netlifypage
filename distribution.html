@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Distribución | The Cris Records</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  background: #0f0f0f;
+  color: white;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #1a1a1a;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  color: #ff8c00;
+  margin-bottom: 30px;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #262626;
+  color: white;
+  text-align: left;
+  transition: all .25s;
+}
+
+.sidebar button:hover {
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 40px;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 600px;
+}
+
+.card h1 {
+  margin-top: 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h2>Distribución</h2>
+
+  <button onclick="location.href='/create-release'">
+    ☑️ Crear lanzamiento
+  </button>
+
+  <button onclick="location.href='/releases'">
+    👌 Ver sencillos
+  </button>
+
+  <button onclick="location.href='/dashboard'">
+    ⬅ Volver al dashboard
+  </button>
+</div>
+
+<div class="main">
+  <div class="card">
+    <h1>Distribuye tu música</h1>
+    <p>
+      Desde aquí puedes crear lanzamientos, revisar el estado
+      de tus sencillos y gestionar tu música en
+      <b>The Cris Records</b>.
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
