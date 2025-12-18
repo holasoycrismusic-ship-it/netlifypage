@@ -5,112 +5,181 @@
 <title>Dashboard | The Cris Records</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  font-family:Poppins,sans-serif;
-  color:white;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+  color: white;
 }
 
-header{
-  padding:20px;
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: rgba(0,0,0,.6);
 }
 
-.hero{
-  height:300px;
-  background:url("https://images.unsplash.com/photo-1511379938547-c1f69419868d") center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+nav h1 {
+  font-size: 1.4rem;
 }
 
-.hero h1{
-  background:rgba(0,0,0,.6);
-  padding:20px;
-  border-radius:20px;
+nav button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color: white;
+  transition: transform .2s, box-shadow .2s;
 }
 
-.btn{
-  background:linear-gradient(135deg,#ff4d4d,#ff8c00);
-  color:white;
-  padding:14px 24px;
-  border-radius:30px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-  animation:pulse 2s infinite;
+nav button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255,140,0,.5);
 }
 
-.btn:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 25px rgba(255,120,0,.7);
+/* HERO */
+.hero {
+  padding: 80px 30px;
+  text-align: center;
 }
 
-@keyframes pulse{
-  0%{box-shadow:0 0 0 rgba(255,120,0,.4)}
-  50%{box-shadow:0 0 25px rgba(255,120,0,.9)}
-  100%{box-shadow:0 0 0 rgba(255,120,0,.4)}
+.hero h2 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: auto;
+  opacity: .85;
+  font-size: 1.1rem;
+}
+
+/* BUTTONS */
+.actions {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color: white;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.action-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(255,77,77,.6);
+}
+
+/* FREE MESSAGE */
+.free {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.free h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.discord-btn {
+  background: linear-gradient(135deg,#5865F2,#404EED);
+  box-shadow: 0 10px 30px rgba(88,101,242,.6);
+}
+
+.discord-btn:hover {
+  box-shadow: 0 20px 40px rgba(88,101,242,.9);
+}
+
+/* FOOTER */
+footer {
+  margin-top: 100px;
+  padding: 20px;
+  text-align: center;
+  opacity: .5;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <button class="btn" onclick="location.href='uploadmusic.html'">🎵 Distribuir música</button>
-  <button class="btn" onclick="location.href='artistas.html'">🎤 Artistas</button>
-  <button class="btn" id="adminBtn" style="display:none" onclick="location.href='admin.html'">🛠 Admin Panel</button>
-  <button class="btn" onclick="logout()">🚪 Cerrar sesión</button>
-</header>
+<nav>
+  <h1>The Cris Records</h1>
+  <button id="logout">Cerrar sesión</button>
+</nav>
 
-<div class="hero">
-  <h1>Tú puedes distribuir tu música 100% gratis y ganar todas tus regalías</h1>
-</div>
+<section class="hero">
+  <h2>Distribuye tu música al mundo 🌍</h2>
+  <p>
+    Publica tus lanzamientos, gestiona tu perfil artístico
+    y distribuye tu música 100% gratis.
+  </p>
 
+  <div class="actions">
+    <button class="action-btn" onclick="location.href='/distribution'">
+      🎵 Distribuir música
+    </button>
+
+    <button class="action-btn" onclick="location.href='/artistas'">
+      🎤 Artistas
+    </button>
+  </div>
+</section>
+
+<section class="free">
+  <h3>✨ ¡Todo es gratis! Bienvenido eres.</h3>
+
+  <button
+    class="action-btn discord-btn"
+    onclick="window.open('https://discord.gg/Fze6w3TwEv','_blank')">
+    💬 Servidor de Discord
+  </button>
+</section>
+
+<footer>
+  © 2025 The Cris Records
+</footer>
+
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
   authDomain: "thecrisrecords1.firebaseapp.com",
   projectId: "thecrisrecords1",
-  storageBucket: "thecrisrecords1.firebasestorage.app",
-  messagingSenderId: "1050112675638",
-  appId: "1:1050112675638:web:a7da5497827fd94dba6d97",
+  appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const ADMINS=[
- "holasoycrismusic@gmail.com",
- "thisis4k2@gmail.com"
-];
-
-onAuthStateChanged(auth,user=>{
-  if(!user){
-    location.href="index.html";
-  }else{
-    localStorage.setItem("userEmail",user.email);
-    if(ADMINS.includes(user.email)){
-      adminBtn.style.display="inline-block";
-    }
-  }
+onAuthStateChanged(auth, user => {
+  if (!user) location.href = "/";
 });
 
-window.logout=()=>{
-  signOut(auth).then(()=>{
-    localStorage.clear();
-    location.href="index.html";
-  });
+document.getElementById("logout").onclick = () => {
+  signOut(auth).then(() => location.href = "/");
 };
 </script>
 
