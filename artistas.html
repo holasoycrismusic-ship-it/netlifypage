@@ -1,164 +1,189 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Artistas | The Cris Records</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Artistas | The Cris Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  color: white;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
 
-header {
-  padding: 25px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  animation: slideIn 1s ease;
-}
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+      font-family: "Poppins", sans-serif;
+      color: white;
+    }
 
-@keyframes slideIn {
-  from { transform: translateX(-120px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
+    header {
+      padding: 30px 20px 10px;
+      text-align: center;
+    }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-  gap: 22px;
-}
+    header h1 {
+      font-weight: 800;
+      margin-bottom: 12px;
+      animation: slideIn .8s ease;
+    }
 
-.card {
-  background: rgba(255,255,255,.05);
-  padding: 22px;
-  border-radius: 22px;
-  box-shadow: 0 15px 40px rgba(0,0,0,.5);
-  transition: transform .35s, box-shadow .35s;
-}
+    @keyframes slideIn {
+      from { transform: translateX(-40px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 25px 60px rgba(255,140,0,.45);
-}
+    .search-box {
+      max-width: 420px;
+      margin: 0 auto 30px;
+      padding: 0 20px;
+    }
 
-.card h2 {
-  margin: 0 0 10px;
-}
+    .search-box input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
 
-.card p {
-  font-size: 14px;
-  opacity: .92;
-}
+    .artists {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 0 20px 40px;
+      max-width: 1100px;
+      margin: auto;
+    }
 
-.tag {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
-  font-size: 12px;
-}
-</style>
+    .artist-card {
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+    .artist-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.6);
+    }
+
+    .artist-card h3 {
+      margin: 0 0 8px;
+      font-weight: 700;
+      color: #7cf5ff;
+    }
+
+    .artist-card p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #ddd;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: #aaa;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>🎧 Artistas del Sello</header>
+<header>
+  <h1>🎧 Artistas de The Cris Records</h1>
+</header>
 
-<div class="container">
+<div class="search-box">
+  <input
+    type="text"
+    id="search"
+    placeholder="Buscar artista..."
+    onkeyup="filterArtists()"
+  />
+</div>
 
-  <div class="card">
-    <h2>DJ Skinners</h2>
-    <p>
-      DJ Skinners es un DJ y creador de funk y phonk.
-      Recientemente lanzó <b>"I MISS 2025 FUNK"</b>
-      junto a DJ MASTER 001 en nuestro sello.
-    </p>
-    <span class="tag">Funk / Phonk</span>
+<div class="artists" id="artists">
+
+  <div class="artist-card">
+    <h3>DJ Skinners</h3>
+    <p>DJ Skinners es un DJ, creador de funk y phonk. Lanzó “I MISS 2025 FUNK” junto a DJ MASTER 001 en nuestro sello.</p>
   </div>
 
-  <div class="card">
-    <h2>YVN808</h2>
-    <p>
-      YVN808 es un creador de música phonk y ritmo.
-      Recientemente lanzó <b>"FUNK DO ARPHY"</b> en nuestro sello.
-    </p>
-    <span class="tag">Phonk</span>
+  <div class="artist-card">
+    <h3>YVN808</h3>
+    <p>YVN808 es un creador de música phonk y ritmo. Lanzó “FUNK DO ARPHY” en nuestro sello.</p>
   </div>
 
-  <div class="card">
-    <h2>DJ MASTER 001</h2>
-    <p>
-      DJ MASTER 001 es creador de funk y phonk.
-      Lanzó <b>"I MISS 2025 FUNK"</b> junto a DJ Skinners en nuestro sello.
-    </p>
-    <span class="tag">Funk / Phonk</span>
+  <div class="artist-card">
+    <h3>DJ MASTER 001</h3>
+    <p>DJ MASTER 001 es creador de funk y phonk. Lanzó “I MISS 2025 FUNK” junto a DJ Skinners.</p>
   </div>
 
-  <div class="card">
-    <h2>DJ DSN</h2>
-    <p>
-      Santiago, mejor conocido como DJ DSN, es DJ y creador de funk/phonk.
-      Lanzó <b>"MONTAGEM MURDER"</b> y <b>"EN MI PUEBLO FUNK"</b>
-      en nuestro sello.
-    </p>
-    <span class="tag">Funk / Phonk</span>
+  <div class="artist-card">
+    <h3>DJ FXZ</h3>
+    <p>DJ FXZ es un DJ de funks. Creó “PERDÍ MI CUENTA DE INSTAGRAM FUNK”.</p>
   </div>
 
-  <div class="card">
-    <h2>4K2</h2>
-    <p>
-      Karl Johnson F, mejor conocido como 4K2, es editor y productor.
-      Hace lofi-beats y recientemente lanzó <b>"Quiet Rain"</b>
-      en nuestro sello.
-    </p>
-    <span class="tag">Lofi / Beats</span>
+  <div class="artist-card">
+    <h3>4K2</h3>
+    <p>Karl Johnson F, mejor conocido como 4K2, es editor y productor. Lanzó “Quiet Rain”.</p>
   </div>
 
-  <div class="card">
-    <h2>HolaSoyCris</h2>
-    <p>
-      Cristóbal Ignacio, conocido como HSC, es creador de música
-      y fundador del sello <b>The Cris Records</b>.
-    </p>
-    <span class="tag">Founder</span>
+  <div class="artist-card">
+    <h3>HolaSoyCris</h3>
+    <p>Cristóbal Ignacio (HSC) es creador de música y fundador del sello.</p>
   </div>
 
-  <div class="card">
-    <h2>M.V, B.V</h2>
-    <p>
-      Son mis increíbles primos, parte importante del entorno
-      creativo del sello.
-    </p>
-    <span class="tag">Crew</span>
+  <div class="artist-card">
+    <h3>M.V, B.V</h3>
+    <p>Son mis increíbles primos.</p>
   </div>
 
-  <div class="card">
-    <h2>J.A, S.A</h2>
-    <p>
-      Ellas son mis primas y forman parte del equipo creativo
-      de The Cris Records.
-    </p>
-    <span class="tag">Crew</span>
+  <div class="artist-card">
+    <h3>DJ DSN</h3>
+    <p>Santiago, conocido como DJ DSN, lanzó “MONTAGEM MURDER” y “EN MI PUEBLO FUNK”.</p>
   </div>
 
-  <div class="card">
-    <h2>DJ FR3STING</h2>
-    <p>
-      DJ FR3STING, realmente llamado Leandro, es artista
-      y diseñador de <b>The Cris Records</b>.
-    </p>
-    <span class="tag">Artista / Diseño</span>
+  <div class="artist-card">
+    <h3>DJ FR3STING</h3>
+    <p>Leandro, artista y diseñador de The Cris Records.</p>
   </div>
 
 </div>
+
+<div class="no-results" id="noResults">
+  ❌ No se encontraron artistas
+</div>
+
+<script>
+  function filterArtists() {
+    const input = document.getElementById("search").value.toLowerCase();
+    const cards = document.querySelectorAll(".artist-card");
+    let visible = 0;
+
+    cards.forEach(card => {
+      const name = card.querySelector("h3").innerText.toLowerCase();
+      if (name.includes(input)) {
+        card.style.display = "block";
+        visible++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    document.getElementById("noResults").style.display =
+      visible === 0 ? "block" : "none";
+  }
+</script>
 
 </body>
 </html>

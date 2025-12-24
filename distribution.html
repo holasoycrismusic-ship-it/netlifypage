@@ -3,96 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <title>Distribución | The Cris Records</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin: 0;
-  font-family: Poppins, sans-serif;
+  font-family: Arial, sans-serif;
   background: #0f0f0f;
   color: white;
   display: flex;
-  min-height: 100vh;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 260px;
-  background: #1a1a1a;
-  padding: 25px;
-  box-sizing: border-box;
+aside {
+  width: 220px;
+  background: #111;
+  padding: 20px;
 }
 
-.sidebar h2 {
-  color: #ff8c00;
-  margin-bottom: 30px;
-}
-
-.sidebar button {
+aside button {
   width: 100%;
-  padding: 14px;
-  margin-bottom: 14px;
-  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
   border: none;
-  cursor: pointer;
-  font-weight: 600;
-  background: #262626;
+  border-radius: 8px;
+  background: #222;
   color: white;
-  text-align: left;
-  transition: all .25s;
+  cursor: pointer;
 }
 
-.sidebar button:hover {
-  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+aside button:hover {
+  background: #ff4d4d;
 }
 
-/* MAIN */
-.main {
+main {
   flex: 1;
   padding: 40px;
 }
 
-.card {
-  background: rgba(255,255,255,0.05);
-  padding: 30px;
-  border-radius: 20px;
-  max-width: 600px;
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
 }
-
-.card h1 {
-  margin-top: 0;
+button {
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <h2>Distribución</h2>
+<aside>
+  <button onclick="showCreate()">☑️ Crear lanzamiento</button>
+  <button onclick="showMyReleases()">👌 Ver sencillos</button>
+</aside>
 
-  <button onclick="location.href='/create-release'">
-    ☑️ Crear lanzamiento
-  </button>
+<main>
+  <!-- Crear lanzamiento -->
+  <div id="create">
+    <h1>Crear lanzamiento</h1>
 
-  <button onclick="location.href='/releases'">
-    👌 Ver sencillos
-  </button>
+    <input id="songTitle" placeholder="Título de la canción">
+    <input id="artistName" placeholder="Artista">
+    <input type="date" id="releaseDate">
 
-  <button onclick="location.href='/dashboard'">
-    ⬅ Volver al dashboard
-  </button>
-</div>
-
-<div class="main">
-  <div class="card">
-    <h1>Distribuye tu música</h1>
-    <p>
-      Desde aquí puedes crear lanzamientos, revisar el estado
-      de tus sencillos y gestionar tu música en
-      <b>The Cris Records</b>.
-    </p>
+    <button onclick="saveRelease()">Enviar lanzamiento</button>
   </div>
-</div>
+
+  <!-- Ver sencillos -->
+  <div id="myReleases" style="display:none">
+    <h1>Mis sencillos</h1>
+    <table border="1" width="100%" cellpadding="10">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Artista</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="myTable"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+function showCreate() {
+  create.style.display = "block";
+  myReleases.style.display = "none";
+}
+
+function showMyReleases() {
+  create.style.display = "none";
+  myReleases.style.display = "block";
+  loadMyReleases();
+}
+
+function saveRelease() {
+  const title = songTitle.value.trim();
+  const artist = artistName.value.trim();
+  const date = releaseDate.value;
+
+  if (!title || !artist || !date) {
+    alert("Completa todos los campos");
+    return;
+  }
+
+  const releases = JSON.parse(localStorage.getItem("releases")) || [];
+
+  releases.unshift({
+    title,
+    artist,
+    date,
+    status: "Pendiente"
+  });
+
+  localStorage.setItem("releases", JSON.stringify(releases));
+
+  alert("🎵 Lanzamiento enviado (Pendiente)");
+  showMyReleases();
+}
+
+function loadMyReleases() {
+  const releases = JSON.parse(localStorage.getItem("releases")) || [];
+  myTable.innerHTML = "";
+
+  releases.forEach(r => {
+    myTable.innerHTML += `
+      <tr>
+        <td>${r.title}</td>
+        <td>${r.artist}</td>
+        <td>${r.date}</td>
+        <td>${r.status}</td>
+      </tr>
+    `;
+  });
+}
+</script>
 
 </body>
 </html>

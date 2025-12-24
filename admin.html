@@ -2,104 +2,147 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel | The Cris Records</title>
+<title>Distribución | The Cris Records</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  font-family:Poppins,sans-serif;
-  color:white;
-  padding:30px;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: white;
+  display: flex;
 }
 
-h1{font-weight:800}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
+aside {
+  width: 220px;
+  background: #111;
+  padding: 20px;
 }
 
-th,td{
-  border-bottom:1px solid #444;
-  padding:10px;
+aside button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  cursor: pointer;
 }
 
-button{
-  padding:6px 12px;
-  border-radius:12px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
+aside button:hover {
+  background: #ff4d4d;
 }
 
-.approve{background:#2ecc71}
-.reject{background:#e74c3c;color:white}
+main {
+  flex: 1;
+  padding: 40px;
+}
+
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
 </style>
 </head>
 
 <body>
 
-<h1>📊 Admin Panel</h1>
+<aside>
+  <button onclick="showCreate()">☑️ Crear lanzamiento</button>
+  <button onclick="showMyReleases()">👌 Ver sencillos</button>
+</aside>
 
-<table>
-<thead>
-<tr><th>Canción</th><th>Estado</th><th>Acción</th></tr>
-</thead>
-<tbody id="list"></tbody>
-</table>
+<main>
+  <!-- Crear lanzamiento -->
+  <div id="create">
+    <h1>Crear lanzamiento</h1>
+
+    <input id="songTitle" placeholder="Título de la canción">
+    <input id="artistName" placeholder="Artista">
+    <input type="date" id="releaseDate">
+
+    <button onclick="saveRelease()">Enviar lanzamiento</button>
+  </div>
+
+  <!-- Ver sencillos -->
+  <div id="myReleases" style="display:none">
+    <h1>Mis sencillos</h1>
+    <table border="1" width="100%" cellpadding="10">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Artista</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody id="myTable"></tbody>
+    </table>
+  </div>
+</main>
 
 <script>
-const ADMINS = [
-  "holasoycrismusic@gmail.com",
-  "thisis4k2@gmail.com"
-];
+function showCreate() {
+  create.style.display = "block";
+  myReleases.style.display = "none";
+}
 
-// ⏳ Esperar email
-setTimeout(() => {
-  const email = localStorage.getItem("userEmail");
+function showMyReleases() {
+  create.style.display = "none";
+  myReleases.style.display = "block";
+  loadMyReleases();
+}
 
-  if (!email || !ADMINS.includes(email)) {
-    alert("Acceso denegado");
-    location.href = "dashboard.html";
+function saveRelease() {
+  const title = songTitle.value.trim();
+  const artist = artistName.value.trim();
+  const date = releaseDate.value;
+
+  if (!title || !artist || !date) {
+    alert("Completa todos los campos");
     return;
   }
 
-  loadAdmin();
-}, 300);
+  const releases = JSON.parse(localStorage.getItem("releases")) || [];
 
-function loadAdmin(){
-  let singles = JSON.parse(localStorage.getItem("singles")) || [];
-  const list = document.getElementById("list");
+  releases.unshift({
+    title,
+    artist,
+    date,
+    status: "Pendiente"
+  });
 
-  function render(){
-    list.innerHTML="";
-    singles.forEach((s,i)=>{
-      list.innerHTML+=`
-        <tr>
-          <td>${s.title}</td>
-          <td>${s.status}</td>
-          <td>
-            <button class="approve" onclick="setStatus(${i},'✅ Aprobado')">Aprobar</button>
-            <button class="reject" onclick="setStatus(${i},'❌ Rechazado')">Rechazar</button>
-          </td>
-        </tr>
-      `;
-    });
-  }
+  localStorage.setItem("releases", JSON.stringify(releases));
 
-  window.setStatus = (i,status)=>{
-    singles[i].status=status;
-    localStorage.setItem("singles",JSON.stringify(singles));
-    render();
-  }
+  alert("🎵 Lanzamiento enviado (Pendiente)");
+  showMyReleases();
+}
 
-  render();
+function loadMyReleases() {
+  const releases = JSON.parse(localStorage.getItem("releases")) || [];
+  myTable.innerHTML = "";
+
+  releases.forEach(r => {
+    myTable.innerHTML += `
+      <tr>
+        <td>${r.title}</td>
+        <td>${r.artist}</td>
+        <td>${r.date}</td>
+        <td>${r.status}</td>
+      </tr>
+    `;
+  });
 }
 </script>
 
