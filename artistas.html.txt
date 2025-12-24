@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Artistas | The Cris Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+    }
+
+    header p {
+      opacity: 0.8;
+      margin-top: 8px;
+    }
+
+    .search-box {
+      max-width: 420px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 30px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .artists-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .artist-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .artist-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .artist-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .artist-card p {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      line-height: 1.4;
+    }
+
+    .no-results {
+      text-align: center;
+      opacity: 0.6;
+      margin-top: 40px;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎧 Artistas de The Cris Records</h1>
+  <p>Talento independiente • Funk • Phonk • Lofi</p>
+</header>
+
+<div class="search-box">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Buscar artista..."
+    onkeyup="filterArtists()"
+  />
+</div>
+
+<div class="artists-container" id="artistsContainer"></div>
+
+<div class="no-results" id="noResults">
+  No se encontraron artistas 😕
+</div>
+
+<script>
+  const artists = [
+    {
+      name: "DJ Skinners",
+      description: "DJ Skinners es un DJ, creador de funk y phonk. Recientemente lanzó su sencillo 'I MISS 2025 FUNK' junto a DJ MASTER 001 en nuestro sello."
+    },
+    {
+      name: "YVN808",
+      description: "YVN808, creador de música phonk y ritmo. Recientemente lanzó FUNK DO ARPHY en nuestro sello."
+    },
+    {
+      name: "DJ MASTER 001",
+      description: "DJ MASTER 001 es creador de funk y phonk. Lanzó 'I MISS 2025 FUNK' junto a DJ Skinners en nuestro sello."
+    },
+    {
+      name: "M.V, B.V",
+      description: "Son mis increíbles primos."
+    },
+    {
+      name: "DJ DSN",
+      description: "Santiago, mejor conocido como DJ DSN, es un DJ creador de funk/phonk. Lanzó 'MONTAGEM MURDER' y 'EN MI PUEBLO FUNK' en nuestro sello."
+    },
+    {
+      name: "4K2",
+      description: "Karl Johnson F, mejor conocido como 4K2, es editor y productor. Hace lofi-beats y lanzó 'Quiet Rain' en nuestro sello."
+    },
+    {
+      name: "J.A, S.A",
+      description: "Ellas son mis primas."
+    },
+    {
+      name: "HolaSoyCris",
+      description: "Cristóbal Ignacio, conocido como HSC, es creador de música y fundador del sello."
+    },
+    {
+      name: "DJ FR3STING",
+      description: "DJ FR3STING, realmente llamado Leandro, es artista y diseñador de The Cris Records."
+    },
+    {
+      name: "DJ FXZ",
+      description: "DJ FXZ es un DJ de funks. Creó funks populares como 'PERDÍ MI CUENTA DE INSTAGRAM FUNK'."
+    },
+    {
+      name: "DJ MHP30",
+      description: "DJ MHP30 es un DJ creador de phonk/funk. Entró a The Cris Records en diciembre."
+    }
+  ];
+
+  const container = document.getElementById("artistsContainer");
+  const noResults = document.getElementById("noResults");
+
+  function renderArtists(list) {
+    container.innerHTML = "";
+    if (list.length === 0) {
+      noResults.style.display = "block";
+      return;
+    }
+    noResults.style.display = "none";
+
+    list.forEach(artist => {
+      const card = document.createElement("div");
+      card.className = "artist-card";
+      card.innerHTML = `
+        <h3>${artist.name}</h3>
+        <p>${artist.description}</p>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function filterArtists() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = artists.filter(a =>
+      a.name.toLowerCase().includes(query) ||
+      a.description.toLowerCase().includes(query)
+    );
+    renderArtists(filtered);
+  }
+
+  renderArtists(artists);
+</script>
+
+</body>
+</html>
