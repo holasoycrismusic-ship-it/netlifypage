@@ -157,6 +157,11 @@
     <h3>DJ FR3STING</h3>
     <p>Leandro, artista y diseñador de The Cris Records.</p>
   </div>
+  
+  <div class="artist-card">
+    <h3>DJ MHP30
+    <p>DJ MHP30 es un DJ. Se unió en diciembre, 2025.
+  </div>
 
 </div>
 
