@@ -1,230 +1,200 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Dashboard | The Cris Records</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Dashboard | The Cris Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
-  color: white;
-  overflow-x: hidden;
-}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
 
-/* NAVBAR */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  background: rgba(0,0,0,.6);
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-nav h1 {
-  font-size: 1.4rem;
-}
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: white;
+    }
 
-nav button {
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
-  color: white;
-}
+    header {
+      padding: 20px;
+      text-align: center;
+      animation: slideIn 1s ease forwards;
+    }
 
-/* HERO */
-.hero {
-  padding: 80px 30px;
-  text-align: center;
-}
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
 
-.hero h2 {
-  font-size: 2.6rem;
-  margin-bottom: 20px;
-  opacity: 0;
-  transform: translateX(-120px);
-  animation: slideIn 1.2s ease-out forwards;
-}
+    header h1 {
+      font-size: 32px;
+      margin: 0;
+      font-weight: 800;
+    }
 
-@keyframes slideIn {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px 20px;
+      text-align: center;
+    }
 
-.hero p {
-  max-width: 700px;
-  margin: auto;
-  opacity: .85;
-  font-size: 1.1rem;
-  animation: fadeIn 1.8s ease forwards;
-}
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 40px;
+    }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: .85; }
-}
+    .btn {
+      padding: 15px 30px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #ff4d4d, #ff8c00);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
 
-/* BUTTONS */
-.actions {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(255,140,0,0.4);
+    }
 
-.action-btn {
-  padding: 14px 26px;
-  border-radius: 999px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  background: linear-gradient(135deg,#ff4d4d,#ff8c00);
-  color: white;
-  transition: transform .25s, box-shadow .25s;
-}
+    .free-text {
+      margin-top: 50px;
+      font-size: 20px;
+      font-weight: 600;
+    }
 
-.action-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 20px 40px rgba(255,77,77,.6);
-}
+    .discord-btn {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #5865F2, #404EED);
+    }
 
-/* FREE MESSAGE */
-.free {
-  margin-top: 80px;
-  text-align: center;
-}
+    /* CONTACTO */
+    .contact-section {
+      margin-top: 100px;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      text-align: center;
+      color: #ccc;
+    }
 
-.free h3 {
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-}
+    .contact-section h2 {
+      color: white;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
 
-.discord-btn {
-  background: linear-gradient(135deg,#5865F2,#404EED);
-}
+    .contact-section a {
+      color: #4da3ff;
+      text-decoration: none;
+    }
 
-/* FOOTER */
-footer {
-  margin-top: 100px;
-  padding: 20px;
-  text-align: center;
-  opacity: .5;
-}
+    .contact-section a:hover {
+      text-decoration: underline;
+    }
 
-/* 📱 RESPONSIVE PARA CELULAR */
-@media (max-width: 768px) {
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 24px;
+      }
 
-  nav {
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-  }
-
-  .hero {
-    padding: 60px 20px;
-  }
-
-  .hero h2 {
-    font-size: 2rem;
-    transform: translateX(-80px);
-  }
-
-  .hero p {
-    font-size: 1rem;
-  }
-
-  .actions {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .action-btn {
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .free h3 {
-    font-size: 1.4rem;
-  }
-}
-</style>
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<nav>
-  <h1>The Cris Records</h1>
-  <button id="logout">Cerrar sesión</button>
-</nav>
+<header>
+  <h1>Bienvenido a The Cris Records</h1>
+</header>
 
-<section class="hero">
-  <h2>Distribuye tu música al mundo 🌍</h2>
+<div class="container">
 
-  <p>
-    Publica tus lanzamientos, gestiona tu perfil artístico
-    y distribuye tu música 100% gratis.
-  </p>
-
-  <div class="actions">
-    <button class="action-btn" onclick="location.href='/distribution'">
+  <div class="buttons">
+    <button class="btn" onclick="location.href='distribution'">
       🎵 Distribuir música
     </button>
 
-    <button class="action-btn" onclick="location.href='/artistas'">
+    <button class="btn" onclick="location.href='artists'">
       🎤 Artistas
     </button>
+
+    <button class="btn" onclick="logout()">
+      🚪 Cerrar sesión
+    </button>
   </div>
-</section>
 
-<section class="free">
-  <h3>✨ ¡Todo es gratis! Bienvenido eres.</h3>
+  <div class="free-text">
+    ¡Todo es gratis! Bienvenido eres.
+  </div>
 
-  <button
-    class="action-btn discord-btn"
-    onclick="window.open('https://discord.gg/Fze6w3TwEv','_blank')">
+  <button class="btn discord-btn" onclick="location.href='https://discord.gg/Fze6w3TwEv'">
     💬 Servidor de Discord
   </button>
+
+</div>
+
+<section class="contact-section">
+  <h2>Contacto / Contact</h2>
+
+  <p>
+    <strong>Discord:</strong>
+    thecrisrecords / holasoycris_m
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    <a href="mailto:thecrisrecords@gmail.com">
+      thecrisrecords@gmail.com
+    </a>
+  </p>
 </section>
 
-<footer>
-  © 2025 The Cris Records
-</footer>
-
-<!-- FIREBASE -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
-  authDomain: "thecrisrecords1.firebaseapp.com",
-  projectId: "thecrisrecords1",
-  appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyBxBG3pfjle1xXYcHuozHs0CgRd-uDwxLo",
+    authDomain: "thecrisrecords1.firebaseapp.com",
+    projectId: "thecrisrecords1",
+    appId: "1:1050112675638:web:a7da5497827fd94dba6d97"
+  };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-onAuthStateChanged(auth, user => {
-  if (!user) location.href = "/";
-});
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      window.location.href = "index";
+    }
+  });
 
-document.getElementById("logout").onclick = () => {
-  signOut(auth).then(() => location.href = "/");
-};
+  window.logout = function () {
+    signOut(auth).then(() => {
+      window.location.href = "index";
+    });
+  };
 </script>
 
 </body>
